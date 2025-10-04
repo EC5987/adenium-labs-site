@@ -1,69 +1,44 @@
-# React + TypeScript + Vite
+# Adenium Labs Marketing Site
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Adenium Labs marketing site introduces our mindful digital experiences with a spotlight on **Sound Asleep**, a wellness soundscape app for sleep, focus, and creativity. The single-page experience pairs tailored storytelling with rich visuals, screenshots, and clear calls to action for beta testers, newsletter subscribers, and press inquiries.
 
-Currently, two official plugins are available:
+## Tech Stack
+- React 19 with TypeScript powered by Vite
+- Tailwind CSS for utility-first styling and animation helpers
+- ESLint + TypeScript ESLint for linting and type-aware rules
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Running Locally
+1. Install dependencies: `npm install`
+2. Start the local dev server: `npm run dev`
+3. Visit the printed localhost URL (defaults to `http://localhost:5173`)
 
-## Expanding the ESLint configuration
+### Additional Scripts
+- `npm run build` – type-check and generate a production build in `dist`
+- `npm run preview` – serve the production build locally for QA
+- `npm run lint` – run ESLint across the project
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Page Structure
+- **Hero** – brand introduction, tagline, and CTA to explore Sound Asleep
+- **Sound Asleep Feature Section** – feature highlights, testimonial copy, and iPhone mockups sourced from `public/screens`
+- **Screenshots Gallery** – masonry of app screens with descriptive captions
+- **Beta Call to Action** – TestFlight sign-up button plus mailing list form wired to `/api/subscribe`
+- **Contact Section** – quick access to support, press, and partnership emails
+- **Privacy Modal** – accessible via footer link with placeholder policy copy
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Managing Content & Assets
+- Logos, wordmarks, and device frames live in `public/`
+- Hero and gallery screenshots live in `public/screens/`
+- Update CTA links (e.g., TestFlight code, mailing list endpoint) in `src/App.tsx`
+- Tailwind utility classes for layout live directly inside JSX; adjust global styles in `src/index.css`
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Deployment
+1. Run `npm run build`
+2. Deploy the generated `dist/` folder to your hosting platform (e.g., Netlify, Vercel, Cloudflare Pages, or static object storage)
+3. Ensure asset paths remain root-relative for images referenced from `public/`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Contact
+- Support: `support@adeniumlabs.com`
+- Press: `press@adeniumlabs.com`
+- Partnerships: `partnerships@adeniumlabs.com`
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+For project-specific questions, open an issue or reach out via the contact emails above.
