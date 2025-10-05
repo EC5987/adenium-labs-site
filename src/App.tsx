@@ -5,6 +5,25 @@ const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 export default function Site() {
   const [showPrivacy, setShowPrivacy] = React.useState(false);
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+
+  // Handle smooth scrolling with header offset
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setShowMobileMenu(false);
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      const headerHeight = 40; // Reduced offset for better spacing
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 antialiased">
@@ -27,14 +46,129 @@ export default function Site() {
               <span className="text-sm md:text-base font-medium text-neutral-900 tracking-tight">Adenium Labs</span>
             )}
           </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            {/* Removed Apps & About & Privacy from top nav per request */}
-            <a href="#contact" className="hover:opacity-70">Contact</a>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#sound-asleep" onClick={(e) => handleNavClick(e, 'sound-asleep')} className="flex items-center gap-2 text-neutral-700 hover:text-[#005579] transition-colors">
+              <div className="w-5 h-5 rounded overflow-hidden">
+                <img src={asset('soundasleep-icon-new.png')} alt="Sound Asleep" className="w-full h-full object-cover" />
+              </div>
+              Sound Asleep
+            </a>
+            <a href="#beta" onClick={(e) => handleNavClick(e, 'beta')} className="text-neutral-700 hover:text-[#005579] transition-colors">Join Beta</a>
+            <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className="text-neutral-700 hover:text-[#005579] transition-colors">Contact</a>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="md:hidden p-2 rounded-lg hover:bg-neutral-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {showMobileMenu ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
         {/* Design Divider */}
         <div className="h-1 bg-gradient-to-r from-[#005579] via-[#6B7C8F] to-[#D6A3A9]"></div>
       </header>
+
+      {/* Mobile Navigation Dropdown */}
+      {showMobileMenu && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 z-30 bg-black/20 backdrop-blur-sm"
+            onClick={() => setShowMobileMenu(false)}
+          />
+
+          {/* Menu Panel */}
+          <div className="md:hidden fixed top-[73px] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xl">
+            <div className="mx-auto max-w-6xl px-4 py-6">
+              <nav className="flex flex-col space-y-2">
+                {/* Primary App Section */}
+                <div className="pb-3 mb-3 border-b border-neutral-200/30">
+                  <a
+                    href="#sound-asleep"
+                    onClick={(e) => handleNavClick(e, 'sound-asleep')}
+                    className="flex items-center gap-3 text-base font-medium text-neutral-900 py-3 px-4 rounded-xl hover:bg-white/80 transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm">
+                      <img
+                        src={asset('soundasleep-icon-new.png')}
+                        alt="Sound Asleep"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <div>Sound Asleep</div>
+                      <div className="text-sm text-neutral-500 font-normal">Beta App</div>
+                    </div>
+                  </a>
+                </div>
+
+                {/* Secondary Navigation */}
+                <a
+                  href="#screens"
+                  onClick={(e) => handleNavClick(e, 'screens')}
+                  className="flex items-center gap-3 text-base font-medium text-neutral-900 py-3 px-4 rounded-xl hover:bg-white/80 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(0,85,121,0.15)] bg-gradient-to-br from-[#005579] to-[#004760]">
+                    <div className="w-full h-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div>Features</div>
+                    <div className="text-sm text-neutral-500 font-normal">See Sound Asleep in Action</div>
+                  </div>
+                </a>
+
+                {/* Divider */}
+                <div className="mx-4 border-t border-neutral-200/50"></div>
+
+                <a
+                  href="#contact"
+                  onClick={(e) => handleNavClick(e, 'contact')}
+                  className="flex items-center gap-3 text-base font-medium text-neutral-900 py-3 px-4 rounded-xl hover:bg-white/80 transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(214,163,169,0.25)] bg-gradient-to-br from-[#D6A3A9] to-[#C89BA0]">
+                    <div className="w-full h-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <div>Contact</div>
+                    <div className="text-sm text-neutral-500 font-normal">Get in Touch</div>
+                  </div>
+                </a>
+
+                {/* Single Primary CTA */}
+                <div className="pt-4 mt-2">
+                  <a
+                    href="#beta"
+                    onClick={(e) => handleNavClick(e, 'beta')}
+                    className="flex items-center justify-center gap-2 w-full rounded-xl px-6 py-4 text-white bg-[#005579] hover:bg-[#004760] transition font-semibold shadow-md"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Join Beta
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Hero with large brand logo placeholder */}
       <section id="home" className="relative">
@@ -60,13 +194,13 @@ export default function Site() {
 
             {/* Right: large framed wordmark with soft halo + fade-in */}
             <div className="relative mx-auto md:mx-0 md:order-1">
-              <a href={asset('adenium-logo-1000.png')} target="_blank" rel="noreferrer" className="block animate-fade-in-up">
+              <div className="block animate-fade-in-up">
                 {/* Circle badge variant: minimal, premium, non-repetitive */}
                 <div className="relative aspect-square w-full max-w-[280px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[520px] rounded-full border border-neutral-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] grid place-items-center">
                   <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/60 before:content-[''] before:absolute before:inset-[6%] before:rounded-full before:ring-1 before:ring-inset before:ring-neutral-100"></div>
                   <AdeniumLogo className="w-2/3 max-w-[360px]" />
                 </div>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -83,18 +217,18 @@ export default function Site() {
                   <SoundAsleepIcon className="h-12 w-12" />
                   <div>
                     <h2 className="text-2xl font-semibold">Sound Asleep</h2>
-                    <span className="text-teal-600 text-lg font-semibold tracking-tight">Now in Beta</span>
+                    <span className="text-[#005579] text-lg font-semibold tracking-tight">Now in Beta</span>
                   </div>
                 </div>
                 <p className="text-neutral-700 leading-relaxed mb-5">
                   Create customizable soundscapes for sleep, meditation, relaxation, focus, massage sessions, and gentle wake‑ups. Layer nature sounds, ambient textures, and healing tones to craft your perfect audio environment.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a href="#beta" className="inline-flex items-center justify-center rounded-xl px-4 py-3 text-white bg-[#12A4A6] hover:bg-[#0F8F91] transition shadow-sm font-semibold text-base">
+                  <a href="#beta" className="inline-flex items-center justify-center rounded-xl px-4 py-3 text-white bg-[#005579] hover:bg-[#004760] transition shadow-sm font-semibold text-base">
                     <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                     Join Beta (TestFlight)
                   </a>
-                  <a href="#beta" className="inline-flex items-center justify-center rounded-xl px-4 py-3 border border-[#12A4A6] text-[#117E7F] hover:bg-[#E6F7F7] transition font-semibold text-base">
+                  <a href="#beta" className="inline-flex items-center justify-center rounded-xl px-4 py-3 border border-[#005579] text-[#005579] hover:bg-[#F7F8F9] transition font-semibold text-base">
                     Get Notified
                     <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
                   </a>
@@ -103,41 +237,41 @@ export default function Site() {
             </div>
 
             {/* Key Features */}
-            <div data-testid="features-card" className="mt-6 rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#D8EFE8] via-[#EBF6E9] to-[#F8ECEF] shadow-md">
+            <div data-testid="features-card" className="mt-6 rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-[#D0E8F3] via-[#E0E6EA] to-[#E9D6DC] shadow-md">
               <h3 className="text-xl font-semibold mb-6">Key Features</h3>
               <ul className="space-y-4 text-neutral-800">
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                   </div>
                   Layered sound mixing with intuitive controls
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                   </div>
                   Curated presets for every mood and moment
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" /></svg>
                   </div>
                   Categories: Nature, Water & Wind, Urban Ambience, Healing Tones
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg>
                   </div>
                   Smart wake‑up options with gentle transitions
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
                   </div>
                   Minimalist, distraction‑free design
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="mt-0.5 h-5 w-5 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                  <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" /></svg>
                   </div>
                   Perfect for sleep, meditation, focus, and relaxation
@@ -193,7 +327,7 @@ export default function Site() {
       </section>
 
       {/* Adaptive Design */}
-      <section className="border-t border-neutral-200 bg-gradient-to-br from-[#F8FCFC] to-[#F0F8F8]">
+      <section className="border-t border-neutral-200 bg-gradient-to-br from-[#F7F8F9] to-[#F2F6F7]">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl sm:text-3xl font-semibold">Crafted with Liquid Glass</h3>
@@ -201,42 +335,42 @@ export default function Site() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden">
                 <img src={asset('icons/soundasleep-icon-default.png')} alt="Default Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Default</h4>
               <p className="text-xs text-neutral-600">Standard design</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden">
                 <img src={asset('icons/soundasleep-icon-dark.png')} alt="Dark Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Dark</h4>
               <p className="text-xs text-neutral-600">Dark mode</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden bg-black">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden bg-black">
                 <img src={asset('icons/soundasleep-icon-mono-light.png')} alt="Mono Light Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Mono Light</h4>
               <p className="text-xs text-neutral-600">Monochrome</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden bg-white">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden bg-white">
                 <img src={asset('icons/soundasleep-icon-mono-dark.png')} alt="Mono Dark Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Mono Dark</h4>
               <p className="text-xs text-neutral-600">Monochrome</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden">
                 <img src={asset('icons/soundasleep-icon-tinted-light.png')} alt="Tinted Light Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Tinted Light</h4>
               <p className="text-xs text-neutral-600">Tinted style</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-[0_8px_24px_rgba(0,85,121,0.25),_0_2px_8px_rgba(0,0,0,0.08)] overflow-hidden">
                 <img src={asset('icons/soundasleep-icon-tinted-dark.png')} alt="Tinted Dark Icon" className="w-full h-full object-cover" />
               </div>
               <h4 className="text-sm font-medium text-neutral-900">Tinted Dark</h4>
@@ -279,7 +413,7 @@ export default function Site() {
 
 function BetaSection() {
   return (
-    <section id="beta" className="bg-[#F6FAFA]">
+    <section id="beta" className="bg-[#F7F8F9]">
       <div className="mx-auto max-w-6xl px-4 py-16">
         {/* Heading */}
         <div className="text-center mb-10">
@@ -292,7 +426,7 @@ function BetaSection() {
           {/* Card 1: Beta Testing */}
           <div className="rounded-2xl bg-white shadow-md p-6 flex flex-col justify-between">
             <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-[#12A4A6] flex items-center justify-center text-white">
+              <div className="h-10 w-10 rounded-lg bg-[#005579] flex items-center justify-center text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 3v2m6-2v2M5 11h14M7 5h10l-1 2-2 4v3a3 3 0 1 1-6 0V11L8 7 7 5z"/></svg>
               </div>
               <div className="flex-1">
@@ -301,7 +435,7 @@ function BetaSection() {
                 <p className="text-neutral-700 mb-5">Download the beta version and start creating your perfect soundscapes today. Your feedback helps us improve the experience for everyone.</p>
               </div>
             </div>
-            <a data-testid="beta-join-button" href="https://testflight.apple.com/join/XXXXXXXX" target="_blank" rel="noreferrer" className="mt-6 block w-full text-center rounded-xl bg-[#12A4A6] hover:bg-[#0F8F91] text-white font-semibold text-base py-3">Join Beta on TestFlight</a>
+            <a data-testid="beta-join-button" href="https://testflight.apple.com/join/XXXXXXXX" target="_blank" rel="noreferrer" className="mt-6 block w-full text-center rounded-xl bg-[#005579] hover:bg-[#004760] text-white font-semibold text-base py-3">Join Beta on TestFlight</a>
           </div>
 
           {/* Card 2: Stay Updated */}
@@ -318,7 +452,7 @@ function BetaSection() {
             </div>
             <form action="/api/subscribe" method="POST" className="mt-6 space-y-3">
               <input type="email" name="email" required placeholder="Enter your email address" className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 outline-none focus:border-neutral-400" />
-              <button data-testid="beta-email-button" type="submit" className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C98E95] text-black font-semibold text-base py-3">Notify Me at Launch</button>
+              <button data-testid="beta-email-button" type="submit" className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C89BA0] text-black font-semibold text-base py-3">Notify Me at Launch</button>
             </form>
           </div>
         </div>
@@ -326,7 +460,7 @@ function BetaSection() {
         {/* For Beta Testers banner */}
         <div className="mt-8 rounded-2xl p-6 md:p-8 bg-gradient-to-br from-[#F8ECEF] via-[#EECED4] to-[#D6A3A9] text-neutral-900">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-lg bg-[#12A4A6] flex items-center justify-center text-white">
+            <div className="h-10 w-10 rounded-lg bg-[#005579] flex items-center justify-center text-white">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
             </div>
             <h4 className="text-lg font-semibold">For Beta Testers</h4>
@@ -353,55 +487,62 @@ function BetaSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="border-t border-neutral-200 bg-[#EEF4F6]">
-      <div className="mx-auto max-w-6xl px-4 py-16">
-        <div className="text-center">
-          <h3 className="text-3xl font-semibold">Get in Touch</h3>
-          <p className="mt-2 text-neutral-600 max-w-2xl mx-auto">Have questions, feedback, or partnership ideas? We'd love to hear from you. Let's build something mindful together.</p>
-        </div>
-
-        <div className="mt-8 grid md:grid-cols-2 gap-6">
-          {/* Support */}
-          <div className="rounded-2xl bg-white shadow-md p-6">
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-[#12A4A6] text-white grid place-items-center">
-                {/* mail icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16v12H4z"/><path d="m22 6-10 7L2 6"/></svg>
+    <section id="contact" className="border-t border-neutral-200 bg-white">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:py-20">
+        <div className="rounded-3xl p-[4px] bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+          <div className="rounded-3xl bg-white/95 backdrop-blur-sm p-4 sm:p-12">
+            <div className="flex items-center gap-4 mb-4 sm:flex-col sm:text-center sm:mb-8">
+              <div className="w-28 h-28 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-[#D0E8F3] via-[#E0E6EA] to-[#E9D6DC] shadow-lg flex items-center justify-center flex-shrink-0 sm:mb-6">
+                <img src={asset('adenium-mark-256.png')} alt="Adenium Labs" className="w-20 h-20 sm:w-28 sm:h-28" />
               </div>
-              <div className="flex-1">
-                <div className="font-semibold">General Support</div>
-                <p className="text-sm text-neutral-500">Questions about our apps, account issues, or general support.</p>
-                <a href="mailto:support@adeniumlabs.com" className="text-[#12A4A6]">support@adeniumlabs.com</a>
+              <div className="text-left sm:text-center">
+                <h2 className="text-xl sm:text-3xl font-semibold text-neutral-900 mb-1 sm:mb-2">Get in Touch</h2>
+                <p className="text-[#005579] text-sm sm:text-lg font-semibold tracking-tight">We're here to help</p>
               </div>
             </div>
-          </div>
 
-          {/* Press */}
-          <div className="rounded-2xl bg-white shadow-md p-6">
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-[#D6A3A9] text-black grid place-items-center">
-                {/* chat icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
-              </div>
-              <div className="flex-1">
-                <div className="font-semibold">Press & Media</div>
-                <p className="text-sm text-neutral-500">Media inquiries, press releases, and interview requests.</p>
-                <a href="mailto:press@adeniumlabs.com" className="text-[#12A4A6]">press@adeniumlabs.com</a>
-              </div>
-            </div>
-          </div>
+            <p className="text-neutral-700 leading-relaxed mb-4 sm:mb-8 text-center text-xs sm:text-base">
+              Have questions, feedback, or partnership ideas? We'd love to hear from you. Let's build something mindful together.
+            </p>
 
-          {/* Partnerships */}
-          <div className="rounded-2xl bg-white shadow-md p-6 md:col-span-2 md:mx-auto md:w-1/2">
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] text-white grid place-items-center">
-                {/* users icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
+              <div className="flex items-center gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#005579] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="text-left sm:text-center">
+                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">General Support</div>
+                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Questions about our apps and services</div>
+                  <a href="mailto:support@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">support@adeniumlabs.com</a>
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="font-semibold">Partnerships</div>
-                <p className="text-sm text-neutral-500">Business partnerships, collaborations, and integration opportunities.</p>
-                <a href="mailto:partnerships@adeniumlabs.com" className="text-[#12A4A6]">partnerships@adeniumlabs.com</a>
+
+              <div className="flex items-center gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#D6A3A9] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                </div>
+                <div className="text-left sm:text-center">
+                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">Press & Media</div>
+                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Media inquiries and press releases</div>
+                  <a href="mailto:press@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">press@adeniumlabs.com</a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-[#0b6a8e] to-[#005579] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div className="text-left sm:text-center">
+                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">Partnerships</div>
+                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Business collaborations and integrations</div>
+                  <a href="mailto:partnerships@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">partnerships@adeniumlabs.com</a>
+                </div>
               </div>
             </div>
           </div>
