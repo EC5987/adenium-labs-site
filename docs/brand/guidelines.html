@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adenium Labs — Brand Guidelines</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    /* Brand font: embed WOFF2 with local fallbacks */
+    @font-face {
+      font-family: "ChillaxVariable";
+      src:
+        url("./Chillax-Variable.woff2") format("woff2"),
+        local("Chillax Variable"),
+        local("ChillaxVariable"),
+        local("ChillaxVariable-Regular"),
+        local("Chillax"),
+        local("Chillax VF"),
+        local("Chillax-Variable"),
+        local("Chillax Variable Trial");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* tokens.css now provides :root design tokens */
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--offwhite);color:var(--charcoal);font-family:var(--font)}
+
+    .wrap{max-width:1200px;margin:32px auto;padding:0 24px}
+    .panel{background:rgba(255,255,255,.66);backdrop-filter:blur(6px);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;border:1px solid rgba(255,255,255,.9);margin-bottom:32px}
+
+    h1,h2,h3{font-weight:var(--w-title);margin:0 0 8px}
+    h1{font-size:30px}
+    h2{font-size:22px;margin-top:6px}
+    h3{font-size:18px}
+    p{font-weight:var(--w-body);line-height:1.5;margin:6px 0 0}
+
+    .logo-row{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .logo-row img{height:80px;object-fit:contain}
+
+    .swatches{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (min-width:1000px){ .swatches{grid-template-columns:repeat(6,1fr)} }
+    .swatch{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+    .swatch .chip{height:96px}
+    .swatch .meta{padding:14px;background:rgba(255,255,255,.8);backdrop-filter:blur(4px);font-size:14px;font-weight:400}
+    .hex{font-family:ui-monospace;font-weight:650}
+
+    .btn{display:inline-block;padding:12px 18px;border-radius:var(--pill);font-weight:var(--w-cta);text-decoration:none;transition:.2s box-shadow,.2s transform}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.18)}
+    .btn.primary{color:#fff;background:linear-gradient(135deg,#0b6a8e,var(--teal))}
+    .btn.secondary{border:2px solid var(--teal);background:var(--offwhite);color:var(--teal)}
+    .btn.ghost{border:2px solid rgba(0,85,121,.45);color:rgba(0,85,121,.92);background:transparent;font-weight:400}
+    /* Higher-contrast Ghost on dark contexts */
+    .card.dark .btn.ghost,
+    .phone.dark .btn.ghost,
+    .dark .btn.ghost{border:2px solid rgba(247,248,249,.78); color:#F7F8F9; background:transparent}
+    .card.dark .btn.ghost:hover,
+    .phone.dark .btn.ghost:hover,
+    .dark .btn.ghost:hover{background:rgba(255,255,255,.10); box-shadow:0 6px 16px rgba(0,0,0,.30)}
+
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:24px}
+    .card{border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);font-weight:400}
+    .card.light{background:var(--offwhite)}
+    .card.dark{background:var(--d-card);color:var(--d-text)}
+
+    .control{margin:10px 0}
+    .toggle{width:56px;height:32px;border-radius:var(--pill);position:relative;box-shadow:inset 0 2px 6px rgba(0,0,0,.18)}
+    .toggle .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;transition:.25s}
+    .toggle.on .knob{left:27px}
+
+    .slider{height:6px;border-radius:var(--pill);position:relative}
+    .slider .fill{position:absolute;left:0;top:0;bottom:0;border-radius:var(--pill)}
+    .slider .thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.08)}
+
+    .light .toggle{background:var(--toggle-track-off)}
+    .light .toggle.on{background:var(--toggle-track-on)}
+    .light .toggle .knob{background:var(--toggle-knob)}
+    .light .slider{background:var(--slider-track)}
+    .light .slider .fill{background:var(--slider-fill)}
+    .light .slider .thumb{background:var(--slider-thumb)}
+
+    .dark{color:var(--d-text)}
+    .dark .toggle{background:var(--d-toggle-off)}
+    .dark .toggle.on{background:var(--d-toggle-on)}
+    .dark .toggle .knob{background:var(--d-thumb)}
+    .dark .slider{background:var(--d-slider-track)}
+    .dark .slider .fill{background:var(--d-slider-fill)}
+
+    /* Print styles for high‑quality PDF export (Letter) */
+    @media print {
+      @page { size: Letter; margin: 0.6in; }
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .wrap { max-width: none; padding: 0; }
+      .panel { box-shadow: none; break-inside: avoid; -webkit-column-break-inside: avoid; page-break-inside: avoid; }
+      .cards, .swatches, .phones, .card, .phone, img, h1, h2, h3 { break-inside: avoid; page-break-inside: avoid; }
+      /* Ensure swatches lay out nicely on paper */
+      .swatches { grid-template-columns: repeat(3, 1fr) !important; }
+      /* Tidy buttons and hide code sections for PDF */
+      .btn { box-shadow: none; }
+      pre.code { display: none !important; }
+    }
+    .dark .slider .thumb{background:var(--d-thumb)}
+
+    .phones{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:12px}
+    .phone{aspect-ratio:9/19.5;border-radius:32px;position:relative;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06)}
+    .phone.light{background:var(--bg-light)}
+    .phone.dark{background:var(--bg-dark)}
+    .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:42%;height:18px;border-radius:10px;background:rgba(0,0,0,.6)}
+    .mock-card{position:absolute;left:16px;right:16px;border-radius:14px;padding:12px;box-shadow:var(--shadow-soft)}
+    .mock-card.light{top:120px;background:var(--offwhite);color:var(--charcoal)}
+    .mock-card.dark{top:120px;background:rgba(255,255,255,.08);color:var(--d-text);backdrop-filter:blur(4px)}
+    .mock-cta{position:absolute;left:16px;right:16px;bottom:24px;display:flex;gap:10px}
+
+    .code{white-space:pre;background:#0f172a;color:#e5e7eb;padding:14px;border-radius:12px;overflow:auto;font:12px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    footer{margin-top:32px;font-size:12px;color:#223;opacity:.75;text-align:center}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <h1>Adenium Labs — Brand Guidelines</h1>
+      <div class="logo-row">
+        <img src="soundasleep-icon.png" alt="Sound Asleep App Icon" style="height:96px;">
+        <img src="adenium-logo-1000.png" alt="Adenium Labs Logo (Black)">
+        <img src="adenium-logo-white-256.png" alt="Adenium Labs Logo (White)" style="background:#333;padding:12px;border-radius:12px;">
+      </div>
+      <p>Single source of truth for Sound Asleep & Adenium Labs visuals. Typography matches the app’s lighter vibe. Blush is reserved for gradients; teal drives interaction.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Colors</h2>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:var(--teal)"></div><div class="meta">Primary — Teal<br><span class="hex">#005579</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--blush)"></div><div class="meta">Accent — Blush (gradients only)<br><span class="hex">#D6A3A9</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--cream)"></div><div class="meta">Highlight — Cream<br><span class="hex">#FFF6C3</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--offwhite)"></div><div class="meta">Surface — Off‑white<br><span class="hex">#F7F8F9</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--slate)"></div><div class="meta">Neutral — Slate<br><span class="hex">#6B7C8F</span></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--charcoal)"></div><div class="meta">Text — Charcoal<br><span class="hex">#1E1E1E</span></div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Typography</h2>
+      <p><strong>Family:</strong> Chillax Variable. Use lighter weights (400) with 500 for CTAs. Avoid heavy weights to preserve the calm aesthetic.</p>
+      <h3 style="font-weight:400;font-size:32px">Title / H1</h3>
+      <h3 style="font-weight:400;font-size:24px">Section / H2</h3>
+      <h3 style="font-weight:400;font-size:18px">Block / H3</h3>
+      <p>Body text (400); Label/CTA (500).</p>
+    </section>
+
+    <section class="panel">
+      <h2>App Backgrounds & Dark Mode</h2>
+      <p>Use atmospheric gradients—never flat black/white. Light mode: teal → slate → blush with a subtle cream glow. Dark mode deepens teal and slate; keep text high‑contrast and controls luminous.</p>
+      <div class="phones">
+        <div class="phone light">
+          <div class="notch"></div>
+          <div class="mock-card light">
+            <h3 style="margin:0;font-weight:400">Light Card</h3>
+            <p style="margin:6px 0 0">Off‑white surface on gradient background.</p>
+            <div class="control"><div class="toggle on"><div class="knob"></div></div></div>
+            <div class="control"><div class="slider"><div class="fill" style="width:70%"></div><div class="thumb" style="left:70%"></div></div></div>
+          </div>
+          <div class="mock-cta">
+            <a class="btn primary" href="#">Primary</a>
+            <a class="btn secondary" href="#">Secondary</a>
+            <a class="btn ghost" href="#">Ghost</a>
+          </div>
+        </div>
+        <div class="phone dark">
+          <div class="notch"></div>
+          <div class="mock-card dark">
+            <h3 style="margin:0;font-weight:400">Dark Card</h3>
+            <p style="margin:6px 0 0">Glassy card on teal‑slate gradient.</p>
+            <div class="control dark"><div class="toggle on"><div class="knob"></div></div></div>
+            <div class="control dark"><div class="slider"><div class="fill" style="width:45%"></div><div class="thumb" style="left:45%"></div></div></div>
+          </div>
+          <div class="mock-cta">
+            <a class="btn primary" href="#">Primary</a>
+            <a class="btn secondary" href="#">Secondary</a>
+            <a class="btn ghost" href="#">Ghost</a>
+          </div>
+        </div>
+      </div>
+      <pre class="code">/* Light app root */
+body.light { background: var(--bg-light); }
+/* Dark app root */
+body.dark  { background: var(--bg-dark); color: var(--d-text); }
+/* Prefer device theme */
+@media (prefers-color-scheme: dark){ body { background: var(--bg-dark); color: var(--d-text); } }</pre>
+    </section>
+
+    <section class="panel">
+      <h2>Buttons</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <a class="btn primary" href="#">Primary</a>
+        <a class="btn secondary" href="#">Secondary</a>
+        <a class="btn ghost" href="#">Ghost</a>
+      </div>
+      <ul>
+        <li>Primary = teal gradient; Secondary = off‑white + teal border; Ghost (light) = low‑emphasis teal outline.</li>
+        <li>On dark surfaces, Ghost switches to off‑white outline/text for contrast (see phone mockup).</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Controls</h2>
+      <div class="cards">
+        <div class="card light">
+          <h3 style="font-weight:400;margin-top:0">Light Tokens</h3>
+          <div class="control"><div class="toggle on"><div class="knob"></div></div></div>
+          <div class="control"><div class="slider"><div class="fill" style="width:65%"></div><div class="thumb" style="left:65%"></div></div></div>
+        </div>
+        <div class="card dark">
+          <h3 style="font-weight:400;margin-top:0">Dark Tokens</h3>
+          <div class="control dark"><div class="toggle on"><div class="knob"></div></div></div>
+          <div class="control dark"><div class="slider"><div class="fill" style="width:40%"></div><div class="thumb" style="left:40%"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Design Tokens (CSS)</h2>
+      <pre class="code">:root{
+  --teal:#005579; --blush:#D6A3A9; --cream:#FFF6C3; --charcoal:#1E1E1E; --slate:#6B7C8F; --offwhite:#F7F8F9;
+  --bg-light: radial-gradient(120px 120px at 78% 20%, var(--cream), rgba(255,246,195,0) 60%), linear-gradient(180deg,#0b5a78,#6b7c8f 55%, #d6a3a9);
+  --bg-dark:  radial-gradient(140px 140px at 20% 28%, rgba(255,246,195,.25), rgba(255,246,195,0) 55%), linear-gradient(180deg,#032f3e,#0b4e67 55%, #415362);
+  --toggle-track-on:linear-gradient(135deg,#0b6a8e,var(--teal)); --toggle-track-off:#d7dee6; --toggle-knob:var(--offwhite);
+  --slider-track:#d9dfe6; --slider-fill:linear-gradient(90deg,#0b6a8e,var(--teal)); --slider-thumb:var(--offwhite);
+  --d-text:#f2f6f7; --d-muted:#b9c7d1; --d-card:linear-gradient(180deg,#032f3e,#0b4e67);
+  --d-toggle-off:#284b5a; --d-toggle-on:linear-gradient(135deg,#12799f,#0a4e66); --d-thumb:#F7F8F9;
+  --d-slider-track:#274b5a; --d-slider-fill:linear-gradient(90deg,#12799f,#0a4e66);
+}
+.light .toggle{background:var(--toggle-track-off)}
+.light .toggle.on{background:var(--toggle-track-on)}
+.light .slider{background:var(--slider-track)}
+.light .slider .fill{background:var(--slider-fill)}
+.dark  {color:var(--d-text)}
+.dark .toggle{background:var(--d-toggle-off)}
+.dark .toggle.on{background:var(--d-toggle-on)}
+.dark .slider{background:var(--d-slider-track)}
+.dark .slider .fill{background:var(--d-slider-fill)}
+</pre>
+    </section>
+
+    
+
+    <footer>Adenium Labs — Sound Asleep Brand Guidelines © 2025</footer>
+  </main>
+</body>
+</html>

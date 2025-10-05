@@ -1,22 +1,23 @@
 import React from "react";
 
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 export default function Site() {
   const [showPrivacy, setShowPrivacy] = React.useState(false);
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
-  
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 antialiased">
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/90 border-b border-neutral-200">
+      <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/90">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2">
             <AdeniumMark className="h-8 w-8" />
             {/* Wordmark image with text fallback */}
             {showWordmarkImg ? (
               <img
-                src="/adenium-wordmark-600.png"
-                srcSet="/adenium-wordmark-300.png 300w, /adenium-wordmark-600.png 600w, /adenium-wordmark-1200.png 1200w"
+                src={asset('adenium-wordmark-600.png')}
+                srcSet={`${asset('adenium-wordmark-300.png')} 300w, ${asset('adenium-wordmark-600.png')} 600w, ${asset('adenium-wordmark-1200.png')} 1200w`}
                 sizes="(min-width: 768px) 120px, 90px"
                 alt="Adenium Labs"
                 className="h-2 md:h-3 w-auto"
@@ -31,6 +32,8 @@ export default function Site() {
             <a href="#contact" className="hover:opacity-70">Contact</a>
           </nav>
         </div>
+        {/* Design Divider */}
+        <div className="h-1 bg-gradient-to-r from-[#005579] via-[#6B7C8F] to-[#D6A3A9]"></div>
       </header>
 
       {/* Hero with large brand logo placeholder */}
@@ -57,7 +60,7 @@ export default function Site() {
 
             {/* Right: large framed wordmark with soft halo + fade-in */}
             <div className="relative mx-auto md:mx-0 md:order-1">
-              <a href="/adenium-logo-1000.png" target="_blank" rel="noreferrer" className="block animate-fade-in-up">
+              <a href={asset('adenium-logo-1000.png')} target="_blank" rel="noreferrer" className="block animate-fade-in-up">
                 {/* Circle badge variant: minimal, premium, non-repetitive */}
                 <div className="relative aspect-square w-full max-w-[280px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[520px] rounded-full border border-neutral-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] grid place-items-center">
                   <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/60 before:content-[''] before:absolute before:inset-[6%] before:rounded-full before:ring-1 before:ring-inset before:ring-neutral-100"></div>
@@ -74,7 +77,7 @@ export default function Site() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 grid md:grid-cols-2 gap-10 items-start">
           {/* LEFT: App card */}
           <div>
-            <div data-testid="sound-card" className="rounded-3xl p-[3px] bg-gradient-to-br from-[#5BB1C1] via-[#79B8D3] to-[#C89AD9] shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+            <div data-testid="sound-card" className="rounded-3xl p-[3px] bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
               <div className="rounded-3xl bg-white/95 backdrop-blur-sm p-6 sm:p-8">
                 <div className="flex items-center gap-4 mb-4">
                   <SoundAsleepIcon className="h-12 w-12" />
@@ -145,7 +148,7 @@ export default function Site() {
 
           {/* RIGHT: phone mockup (with iPhone silhouette) */}
           <div className="relative">
-            <PhoneFrame src="/screens/screen-main.jpg" alt="Sound Asleep app main" />
+            <PhoneFrame src={asset('screens/screen-main.jpg')} alt="Sound Asleep app main" />
           </div>
         </div>
     </section>
@@ -158,26 +161,86 @@ export default function Site() {
             <p className="mt-2 sm:mt-3 text-neutral-600 text-sm sm:text-base max-w-2xl mx-auto">Explore the beautiful, intuitive interface designed for your wellness journey</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-            <div className="text-center space-y-3 sm:space-y-4 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-              <PhoneFrame src="/screens/screen-1.jpg" alt="Sound Asleep filter page showing active sounds" />
-              <div className="px-2">
-                <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Filter Page (Active Sounds)</h4>
-                <p className="text-xs sm:text-sm text-neutral-600 mt-1">Adjust volumes and fine-tune your active sounds without distraction.</p>
+            <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-500 lg:ease-out" style={{animationDelay: '0.1s'}}>
+              <div className="phone-card-container">
+                <PhoneFrame src={asset('screens/screen-1.jpg')} alt="Sound Asleep filter page showing active sounds" />
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                  <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Filter Page (Active Sounds)</h4>
+                  <p className="text-xs sm:text-sm text-neutral-600 mt-1">Adjust volumes and fine-tune your active sounds without distraction.</p>
+                </div>
               </div>
             </div>
-            <div className="text-center space-y-3 sm:space-y-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-              <PhoneFrame src="/screens/screen-2.jpg" alt="Sound Asleep sound library" />
-              <div className="px-2">
-                <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Sound Library</h4>
-                <p className="text-xs sm:text-sm text-neutral-600 mt-1">Browse sounds by category and discover what fits your mood.</p>
+            <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-500 lg:ease-out" style={{animationDelay: '0.2s'}}>
+              <div className="phone-card-container">
+                <PhoneFrame src={asset('screens/screen-2.jpg')} alt="Sound Asleep sound library" />
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                  <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Sound Library</h4>
+                  <p className="text-xs sm:text-sm text-neutral-600 mt-1">Browse sounds by category and discover what fits your mood.</p>
+                </div>
               </div>
             </div>
-            <div className="text-center space-y-3 sm:space-y-4 animate-fade-in-up sm:col-span-2 lg:col-span-1 sm:max-w-xs sm:mx-auto lg:max-w-none" style={{animationDelay: '0.3s'}}>
-              <PhoneFrame src="/screens/screen-3.jpg" alt="Sound Asleep wake alarm and sleep timer" />
-              <div className="px-2">
-                <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Wake Alarm & Sleep Timer</h4>
-                <p className="text-xs sm:text-sm text-neutral-600 mt-1">Wake gently or drift off with timers that fade calmly.</p>
+            <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-300 sm:col-span-2 lg:col-span-1 sm:max-w-xs sm:mx-auto lg:max-w-none" style={{animationDelay: '0.3s'}}>
+              <div className="phone-card-container">
+                <PhoneFrame src={asset('screens/screen-3.jpg')} alt="Sound Asleep wake alarm and sleep timer" />
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                  <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Wake Alarm & Sleep Timer</h4>
+                  <p className="text-xs sm:text-sm text-neutral-600 mt-1">Wake gently or drift off with timers that fade calmly.</p>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Adaptive Design */}
+      <section className="border-t border-neutral-200 bg-gradient-to-br from-[#F8FCFC] to-[#F0F8F8]">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl sm:text-3xl font-semibold">Crafted with Liquid Glass</h3>
+            <p className="mt-2 text-neutral-600 max-w-2xl mx-auto">Built for iOS 26+, Sound Asleep features beautiful translucent surfaces and adaptive icons that elegantly blend with your device, creating a seamless and immersive experience</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+                <img src={asset('icons/soundasleep-icon-default.png')} alt="Default Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Default</h4>
+              <p className="text-xs text-neutral-600">Standard design</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+                <img src={asset('icons/soundasleep-icon-dark.png')} alt="Dark Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Dark</h4>
+              <p className="text-xs text-neutral-600">Dark mode</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden bg-black">
+                <img src={asset('icons/soundasleep-icon-mono-light.png')} alt="Mono Light Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Mono Light</h4>
+              <p className="text-xs text-neutral-600">Monochrome</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden bg-white">
+                <img src={asset('icons/soundasleep-icon-mono-dark.png')} alt="Mono Dark Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Mono Dark</h4>
+              <p className="text-xs text-neutral-600">Monochrome</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+                <img src={asset('icons/soundasleep-icon-tinted-light.png')} alt="Tinted Light Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Tinted Light</h4>
+              <p className="text-xs text-neutral-600">Tinted style</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-2xl shadow-lg overflow-hidden">
+                <img src={asset('icons/soundasleep-icon-tinted-dark.png')} alt="Tinted Dark Icon" className="w-full h-full object-cover" />
+              </div>
+              <h4 className="text-sm font-medium text-neutral-900">Tinted Dark</h4>
+              <p className="text-xs text-neutral-600">Tinted style</p>
             </div>
           </div>
         </div>
@@ -331,7 +394,7 @@ function ContactSection() {
           {/* Partnerships */}
           <div className="rounded-2xl bg-white shadow-md p-6 md:col-span-2 md:mx-auto md:w-1/2">
             <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#5BB1C1] via-[#79B8D3] to-[#C89AD9] text-white grid place-items-center">
+              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] text-white grid place-items-center">
                 {/* users icon */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               </div>
@@ -377,8 +440,8 @@ function AdeniumLogo({ className = "" }: { className?: string }) {
   return (
     <img
       className={className}
-      src="/adenium-logo-1000.png"
-      srcSet="/adenium-logo-256.png 256w, /adenium-logo-1000.png 1000w"
+      src={asset('adenium-logo-1000.png')}
+      srcSet={`${asset('adenium-logo-256.png')} 256w, ${asset('adenium-logo-1000.png')} 1000w`}
       sizes="(min-width:1024px) 540px, (min-width:640px) 420px, 320px"
       alt="Adenium Labs"
     />
@@ -386,18 +449,18 @@ function AdeniumLogo({ className = "" }: { className?: string }) {
 }
 
 function AdeniumMark({ className = "" }: { className?: string }) {
-  return <img className={className} src="/adenium-mark-256.png" alt="Adenium Labs Mark" />;
+  return <img className={className} src={asset('adenium-mark-256.png')} alt="Adenium Labs Mark" />;
 }
 
 function SoundAsleepIcon({ className = "" }: { className?: string }) {
-  return <img className={className} src="/soundasleep-icon.png" alt="Sound Asleep" />;
+  return <img className={className} src={asset('soundasleep-icon-new.png')} alt="Sound Asleep" />;
 }
 
 /* --------------------------- UI helper components -------------------------- */
 
 function PhoneFrame({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative mx-auto aspect-[9/19.5] w-full max-w-[240px] sm:max-w-xs transform transition-transform duration-300 hover:scale-105">
+    <div className="relative mx-auto aspect-[9/19.5] w-full max-w-[240px] sm:max-w-xs lg:transform lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105">
       {/* Shadow layers for depth */}
       <div className="absolute inset-0 rounded-[2.5rem] sm:rounded-[3rem] bg-black/20 blur-xl translate-y-6 sm:translate-y-8 scale-110" />
       <div className="absolute inset-0 rounded-[2.5rem] sm:rounded-[3rem] bg-black/10 blur-lg translate-y-3 sm:translate-y-4 scale-105" />

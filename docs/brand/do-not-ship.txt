@@ -1,0 +1,3 @@
+This folder contains brand guidelines, tokens, and assets for design reference.
+It must not be included in the app build. Keep it versioned in git.
+

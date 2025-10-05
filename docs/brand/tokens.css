@@ -1,0 +1,37 @@
+:root{
+  /* —— Core palette —— */
+  --teal:#005579;           /* Primary */
+  --blush:#D6A3A9;          /* Gradient accent only */
+  --cream:#FFF6C3;          /* Highlight glow */
+  --charcoal:#1E1E1E;       /* Text on light */
+  --slate:#6B7C8F;          /* Neutral */
+  --offwhite:#F7F8F9;       /* Light surfaces */
+
+  /* —— Elevation & radii —— */
+  --radius:16px; --radius-sm:10px; --pill:999px;
+  --shadow:0 10px 24px rgba(0,0,0,.12), 0 2px 6px rgba(0,0,0,.08);
+  --shadow-soft:0 6px 16px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
+
+  /* —— Typography —— */
+  --font:"ChillaxVariable", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --w-title:400; --w-body:400; --w-cta:500;
+
+  /* —— Backgrounds —— */
+  --bg-light: radial-gradient(120px 120px at 78% 20%, var(--cream), rgba(255,246,195,0) 60%), linear-gradient(180deg, #0b5a78 0%, #6b7c8f 55%, #d6a3a9 100%);
+  --bg-dark:  radial-gradient(140px 140px at 20% 28%, rgba(255,246,195,.25), rgba(255,246,195,0) 55%), linear-gradient(180deg, #032f3e 0%, #0b4e67 55%, #415362 100%);
+
+  /* —— Controls (Light) —— */
+  --toggle-track-on: linear-gradient(135deg,#0b6a8e,var(--teal));
+  --toggle-track-off: #d7dee6;
+  --toggle-knob: var(--offwhite);
+  --slider-track: #d9dfe6;
+  --slider-fill:  linear-gradient(90deg,#0b6a8e,var(--teal));
+  --slider-thumb: var(--offwhite);
+
+  /* —— Controls (Dark) —— */
+  --d-text:#f2f6f7; --d-muted:#b9c7d1;
+  --d-card: linear-gradient(180deg, #032f3e, #0b4e67);
+  --d-toggle-off:#284b5a; --d-toggle-on: linear-gradient(135deg,#12799f,#0a4e66);
+  --d-thumb:#F7F8F9; --d-slider-track:#274b5a; --d-slider-fill:linear-gradient(90deg,#12799f,#0a4e66);
+}
+
