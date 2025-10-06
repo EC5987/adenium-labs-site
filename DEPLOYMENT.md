@@ -73,6 +73,17 @@ git checkout main
 ## Automated Deployment (Recommended)
 
 ### Option 1: Add npm Script
+
+**IMPORTANT: Configure Base URL First**
+Before deploying, ensure the correct base URL is set in `vite.config.ts`:
+```typescript
+export default defineConfig({
+  base: '/adenium-labs-site/',  // Must match your GitHub repo name
+  plugins: [react()],
+  // ... other config
+})
+```
+
 Add to `package.json`:
 ```json
 {
@@ -121,10 +132,11 @@ jobs:
 - Excludes: Source code, node_modules, build configs
 
 ### Troubleshooting
+- **White page/blank site**: Most common issue - check that `base` URL in `vite.config.ts` matches your repo name (e.g., `/adenium-labs-site/`)
 - **Site not updating**: Check that you pushed to `gh-pages` branch
 - **404 errors**: Verify GitHub Pages is set to serve from `gh-pages` branch
 - **Missing files**: Make sure all assets are in `public/` folder before build
-- **Broken links**: Check that `base` URL is set correctly in `vite.config.ts`
+- **Assets not loading**: Ensure `base` URL is set correctly in `vite.config.ts` - should be `/your-repo-name/`
 
 ## Current Site Structure
 
@@ -150,10 +162,11 @@ gh-pages branch:
 ## Recent Deployment
 
 The site was last deployed with:
-- iOS 26 app icon variants (6 total: default, dark, mono light/dark, tinted light/dark)
-- "Built for iOS 26" design divider
-- Liquid glass section showcasing icon variants
-- Smooth hover animations for screenshot cards
-- Brand-consistent gradients
+- Redesigned Contact section with unified layout and gradient border
+- Mobile-optimized responsive design with horizontal layout
+- Prominent Adenium Labs logo with beautiful gradient background
+- Automated deployment script (`npm run deploy`)
+- Fixed base URL configuration for proper GitHub Pages deployment
+- iOS 26 app icon variants and liquid glass design features
 
-Live site: [Your GitHub Pages URL]
+Live site: https://ec5987.github.io/adenium-labs-site/
