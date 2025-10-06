@@ -298,7 +298,7 @@ export default function Site() {
             <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-500 lg:ease-out" style={{animationDelay: '0.1s'}}>
               <div className="phone-card-container">
                 <PhoneFrame src={asset('screens/screen-1.jpg')} alt="Sound Asleep filter page showing active sounds" />
-                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth mt-4 sm:mt-3">
                   <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Filter Page (Active Sounds)</h4>
                   <p className="text-xs sm:text-sm text-neutral-600 mt-1">Adjust volumes and fine-tune your active sounds without distraction.</p>
                 </div>
@@ -307,7 +307,7 @@ export default function Site() {
             <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-500 lg:ease-out" style={{animationDelay: '0.2s'}}>
               <div className="phone-card-container">
                 <PhoneFrame src={asset('screens/screen-2.jpg')} alt="Sound Asleep sound library" />
-                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth mt-4 sm:mt-3">
                   <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Sound Library</h4>
                   <p className="text-xs sm:text-sm text-neutral-600 mt-1">Browse sounds by category and discover what fits your mood.</p>
                 </div>
@@ -316,7 +316,7 @@ export default function Site() {
             <div className="text-center animate-fade-in-up group lg:hover:scale-105 lg:transition-transform lg:duration-300 sm:col-span-2 lg:col-span-1 sm:max-w-xs sm:mx-auto lg:max-w-none" style={{animationDelay: '0.3s'}}>
               <div className="phone-card-container">
                 <PhoneFrame src={asset('screens/screen-3.jpg')} alt="Sound Asleep wake alarm and sleep timer" />
-                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth">
+                <div className="px-2 lg:group-hover:scale-105 phone-text-smooth mt-4 sm:mt-3">
                   <h4 className="font-semibold text-neutral-900 text-sm sm:text-base">Wake Alarm & Sleep Timer</h4>
                   <p className="text-xs sm:text-sm text-neutral-600 mt-1">Wake gently or drift off with timers that fade calmly.</p>
                 </div>
