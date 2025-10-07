@@ -1,172 +1,57 @@
 # Deployment Guide
 
-This document explains how to deploy the Adenium Labs website to GitHub Pages.
+This site now deploys from the `main` branch through **Cloudflare Pages** and serves the production domain `https://adeniumlabs.com`. The legacy GitHub Pages workflow (`gh-pages` branch + `npm run deploy`) has been retired.
 
-## Understanding the Setup
+## Overview
 
-### Branch Structure
-- **`main` branch**: Contains the source code (React, TypeScript, Vite)
-  - This is where you develop and make changes
-  - Contains `src/`, `package.json`, build configs, etc.
+- `main` is both the development and production branch. Every push to `main` triggers a new Cloudflare Pages deployment.
+- Feature branches are optional. When you open a pull request, Cloudflare creates preview builds automatically so you can validate before merging.
+- The Vite project builds with `npm run build`; the output in `dist/` is what Cloudflare hosts.
 
-- **`gh-pages` branch**: Contains only the built static files
-  - Generated automatically from main branch
-  - Contains compiled HTML, CSS, JS, and assets
-  - This is what GitHub Pages serves as the live website
+## Local workflow
 
-### How It Works
-1. **Development**: Make changes on `main` branch
-2. **Build**: `npm run build` compiles React code into static files
-3. **Deploy**: Copy built files to `gh-pages` branch
-4. **Serve**: GitHub Pages serves the `gh-pages` branch as live site
-
-## Manual Deployment Process
-
-### Step 1: Prepare on Main Branch
 ```bash
-# Make sure you're on main and up to date
-git checkout main
-git pull origin main
+# install once
+npm install
 
-# Test your changes locally
+# iterate locally
 npm run dev
-```
 
-### Step 2: Build the Site
-```bash
-# Build for production
+# sanity-check the production build before merging
 npm run build
-
-# This creates a 'dist' folder with compiled files
 ```
 
-### Step 3: Deploy to gh-pages
-```bash
-# Switch to gh-pages branch
-git checkout gh-pages
+> The Vite config sets `base` to `'/'`, which matches the root-domain hosting on Cloudflare. If you ever need a different base path (e.g., for a temporary GitHub Pages build), override it with `VITE_BASE=/some-path npm run build`.
 
-# Move built files to root (replace existing)
-rm -rf *.html *.js *.css assets/ icons/ screens/ *.png *.svg
-mv dist/* .
-rmdir dist
+## Cloudflare Pages pipeline
 
-# Clean up build artifacts
-rm -rf .vite node_modules public
+1. Cloudflare Pages project: `adeniumlabs-site` (or whatever name you used).
+2. Connected repository: this GitHub repo.
+3. Production branch: `main`.
+4. Build command: `npm ci && npm run build`.
+5. Output directory: `dist`.
+6. Environment: default Node version from Cloudflare Pages (currently Node 18). Adjust in project settings if you need a newer runtime.
 
-# Commit and push
-git add -A
-git commit -m "deploy: [describe your changes]
+Cloudflare automatically caches the previous production deployment. You can promote a preview build to production or roll back instantly from the Pages UI if a release needs to be reverted.
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+## Custom domain
 
-Co-Authored-By: Claude <noreply@anthropic.com>"
+- `adeniumlabs.com` and `www.adeniumlabs.com` should both point to the Pages project (`<project>.pages.dev`). Use Page Rules or Bulk Redirects so only one canonical hostname remains (e.g., redirect `www` ⇒ apex).
+- HTTPS is managed by Cloudflare automatically. Wait for the “Active” certificate status before announcing a new deployment.
 
-git push origin gh-pages
-```
+## Manual redeploys
 
-### Step 4: Return to Development
-```bash
-# Switch back to main for future development
-git checkout main
-```
+- If you need to re-run the build without pushing new code, use Cloudflare Pages → Deployments → “Retry deployment” on the desired commit.
+- Environment variables (for analytics keys, etc.) can be added under Pages → Settings → Environment variables. Remember to document them if they are required for local testing.
 
-## Automated Deployment (Recommended)
+## Cleaning up legacy artifacts
 
-### Option 1: Add npm Script
+- The `gh-pages` branch is no longer required. Delete it once Cloudflare production is verified and close any automation that referenced `npm run deploy`.
+- The `deploy` npm script and `gh-pages` dependency were removed in favor of the Cloudflare pipeline.
 
-**IMPORTANT: Configure Base URL First**
-Before deploying, ensure the correct base URL is set in `vite.config.ts`:
-```typescript
-export default defineConfig({
-  base: '/adenium-labs-site/',  // Must match your GitHub repo name
-  plugins: [react()],
-  // ... other config
-})
-```
+## Checklist before merging to `main`
 
-Add to `package.json`:
-```json
-{
-  "scripts": {
-    "deploy": "npm run build && npx gh-pages -d dist"
-  }
-}
-```
-
-Then deploy with:
-```bash
-npm run deploy
-```
-
-### Option 2: GitHub Actions (Future)
-Create `.github/workflows/deploy.yml`:
-```yaml
-name: Deploy to GitHub Pages
-on:
-  push:
-    branches: [ main ]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm ci && npm run build
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-```
-
-## Important Notes
-
-### Development Workflow
-- ✅ **Always develop on `main` branch**
-- ✅ **Never edit files directly on `gh-pages`**
-- ✅ **Test with `npm run dev` before deploying**
-- ✅ **Build and deploy when ready to go live**
-
-### What Gets Deployed
-- All files from the `dist` folder after build
-- Includes: HTML, CSS, JS bundles, images, icons
-- Excludes: Source code, node_modules, build configs
-
-### Troubleshooting
-- **White page/blank site**: Most common issue - check that `base` URL in `vite.config.ts` matches your repo name (e.g., `/adenium-labs-site/`)
-- **Site not updating**: Check that you pushed to `gh-pages` branch
-- **404 errors**: Verify GitHub Pages is set to serve from `gh-pages` branch
-- **Missing files**: Make sure all assets are in `public/` folder before build
-- **Assets not loading**: Ensure `base` URL is set correctly in `vite.config.ts` - should be `/your-repo-name/`
-
-## Current Site Structure
-
-```
-main branch:
-├── src/
-│   ├── App.tsx          # Main React component
-│   ├── index.css        # Global styles and animations
-│   └── main.tsx         # React entry point
-├── public/              # Static assets (copied to build)
-├── package.json         # Dependencies and scripts
-├── vite.config.ts       # Build configuration
-└── [other config files]
-
-gh-pages branch:
-├── index.html           # Built HTML
-├── assets/              # Bundled CSS/JS
-├── icons/               # iOS 26 app icon variants
-├── screens/             # App screenshots
-└── [other static files]
-```
-
-## Recent Deployment
-
-The site was last deployed with:
-- Redesigned Contact section with unified layout and gradient border
-- Mobile-optimized responsive design with horizontal layout
-- Prominent Adenium Labs logo with beautiful gradient background
-- Automated deployment script (`npm run deploy`)
-- Fixed base URL configuration for proper GitHub Pages deployment
-- iOS 26 app icon variants and liquid glass design features
-
-Live site: https://ec5987.github.io/adenium-labs-site/
+- [ ] `npm run build` succeeds locally.
+- [ ] Preview URL from Cloudflare (if applicable) looks correct on desktop + mobile.
+- [ ] Any new environment variables are added to Cloudflare and documented.
+- [ ] Update `docs/` or `DEPLOYMENT.md` if the process or tooling changes.

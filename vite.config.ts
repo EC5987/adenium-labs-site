@@ -2,8 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
+const base = process.env.VITE_BASE ?? '/'
+
 export default defineConfig({
-  base: '/adenium-labs-site/',
+  base,
   plugins: [react()],
   server: {
     host: true,        // expose on LAN (0.0.0.0)
