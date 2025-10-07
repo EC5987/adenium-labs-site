@@ -412,6 +412,39 @@ export default function Site() {
 /* ---------------- Sections split into components for clarity ---------------- */
 
 function BetaSection() {
+  const [email, setEmail] = React.useState('');
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [feedback, setFeedback] = React.useState('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!email.trim() || status === 'loading') return;
+
+    setStatus('loading');
+    setFeedback('');
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        const code = typeof data?.error === 'string' ? data.error : 'unknown';
+        throw new Error(code === 'invalid_email' ? 'Please enter a valid email address.' : 'Something went wrong. Please try again.');
+      }
+
+      setStatus('success');
+      setFeedback('Thanks! We’ll let you know when Sound Asleep launches.');
+      setEmail('');
+    } catch (error) {
+      setStatus('error');
+      setFeedback(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+    }
+  };
+
   return (
     <section id="beta" className="bg-[#F7F8F9]">
       <div className="mx-auto max-w-6xl px-4 py-16">
@@ -450,9 +483,34 @@ function BetaSection() {
                 <p className="text-neutral-700 mb-4">Not ready for beta testing? Join our mailing list to be notified when Sound Asleep launches publicly in the App Store.</p>
               </div>
             </div>
-            <form action="/api/subscribe" method="POST" className="mt-6 space-y-3">
-              <input type="email" name="email" required placeholder="Enter your email address" className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 outline-none focus:border-neutral-400" />
-              <button data-testid="beta-email-button" type="submit" className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C89BA0] text-black font-semibold text-base py-3">Notify Me at Launch</button>
+            <form onSubmit={handleSubmit} className="mt-6 space-y-3" noValidate>
+              <input
+                type="email"
+                name="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Enter your email address"
+                className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 outline-none focus:border-neutral-400"
+                aria-label="Email address"
+              />
+              <button
+                data-testid="beta-email-button"
+                type="submit"
+                disabled={status === 'loading'}
+                className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C89BA0] disabled:opacity-70 disabled:cursor-not-allowed text-black font-semibold text-base py-3 transition-colors"
+              >
+                {status === 'loading' ? 'Sending…' : 'Notify Me at Launch'}
+              </button>
+              {feedback && (
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className={`text-sm ${status === 'success' ? 'text-emerald-600' : 'text-red-600'}`}
+                >
+                  {feedback}
+                </p>
+              )}
             </form>
           </div>
         </div>

@@ -34,6 +34,14 @@ npm run build
 
 Cloudflare automatically caches the previous production deployment. You can promote a preview build to production or roll back instantly from the Pages UI if a release needs to be reverted.
 
+## Email notification signup
+
+- The `/api/subscribe` endpoint is served by a Cloudflare Pages Function located in `functions/api/subscribe.ts`. It accepts JSON form submissions and stores emails in a KV namespace.
+- Create a KV namespace (Workers & Pages → KV) named something like `adeniumlabs-email-subscribers`.
+- Bind the namespace to the Pages project under Settings → Functions → KV namespaces with the binding name `EMAIL_SUBSCRIBERS`.
+- Preview builds share the same binding. If you need separate storage, create staging/production bindings and guard in the function code.
+- To export the list later, use the KV list API (via `wrangler kv:key list --binding EMAIL_SUBSCRIBERS`) or the Cloudflare dashboard to download all entries.
+
 ## Custom domain
 
 - `adeniumlabs.com` and `www.adeniumlabs.com` should both point to the Pages project (`<project>.pages.dev`). Use Page Rules or Bulk Redirects so only one canonical hostname remains (e.g., redirect `www` ⇒ apex).
