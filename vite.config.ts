@@ -2,7 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-const base = process.env.VITE_BASE ?? '/'
+const env =
+  (globalThis as typeof globalThis & {
+    process?: { env?: Record<string, string | undefined> }
+  }).process?.env ?? {}
+
+const base = env.VITE_BASE ?? '/'
 
 export default defineConfig({
   base,
