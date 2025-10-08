@@ -3,7 +3,6 @@ import React from "react";
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 export default function Site() {
-  const [showPrivacy, setShowPrivacy] = React.useState(false);
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
 
@@ -147,9 +146,28 @@ export default function Site() {
                   </div>
                   <div>
                     <div>Contact</div>
-                    <div className="text-sm text-neutral-500 font-normal">Get in Touch</div>
+                  <div className="text-sm text-neutral-500 font-normal">Get in Touch</div>
+                </div>
+              </a>
+
+              <a
+                href="#privacy-policy"
+                onClick={(e) => handleNavClick(e, 'privacy-policy')}
+                className="flex items-center gap-3 text-base font-medium text-neutral-900 py-3 px-4 rounded-xl hover:bg-white/80 transition-colors"
+              >
+                <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(107,124,143,0.25)] bg-gradient-to-br from-[#6B7C8F] to-[#8DA0B3]">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4V6a4 4 0 1 0-8 0v2c0 2.21 1.79 4 4 4z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 10v6a6 6 0 0 0 12 0v-6" />
+                    </svg>
                   </div>
-                </a>
+                </div>
+                <div>
+                  <div>Privacy</div>
+                  <div className="text-sm text-neutral-500 font-normal">How we handle data</div>
+                </div>
+              </a>
 
                 {/* Single Primary CTA */}
                 <div className="pt-4 mt-2">
@@ -386,8 +404,8 @@ export default function Site() {
       {/* Contact */}
       <ContactSection />
 
-      {/* Privacy Dialog (only accessed from footer link) */}
-      <PrivacyDialog open={showPrivacy} onClose={() => setShowPrivacy(false)} />
+      {/* Privacy */}
+      <PrivacyPolicySection />
 
       {/* Footer (dark grey with logo + punch line) */}
       <footer className="bg-[#23272B] text-gray-300">
@@ -401,7 +419,7 @@ export default function Site() {
           </div>
           <div className="flex flex-col items-end text-sm gap-1">
             <span className="text-gray-500">© {new Date().getFullYear()} Adenium Labs. All rights reserved.</span>
-            <button onClick={() => setShowPrivacy(true)} className="hover:text-white/90">Privacy Policy</button>
+            <a href="#privacy-policy" className="hover:text-white/90">Privacy Policy</a>
           </div>
         </div>
       </footer>
@@ -610,26 +628,55 @@ function ContactSection() {
   );
 }
 
-function PrivacyDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  if (!open) return null;
+function PrivacyPolicySection() {
   return (
-    <div className="fixed inset-0 z-[60] grid place-items-center bg-black/50 p-4" role="dialog" aria-modal="true">
-      <div className="max-w-2xl w-full rounded-2xl bg-white p-6 shadow-xl">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold">Privacy Policy</h3>
-          <button onClick={onClose} className="px-3 py-1 rounded-md bg-neutral-100 hover:bg-neutral-200">Close</button>
-        </div>
-        <div className="mt-4 space-y-3 text-neutral-700">
-          <p>We respect your privacy. Sound Asleep does not sell personal data. Any information you share (such as beta feedback or an email address for updates) is used only to improve the app and communicate with you about the product.</p>
-          <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Data we collect:</strong> optional email for updates; optional crash and analytics data to improve performance.</li>
-            <li><strong>How it’s used:</strong> to provide features, fix bugs, and communicate important updates.</li>
-            <li><strong>Controls:</strong> you can request deletion of your data at any time by emailing <a className="underline" href="mailto:support@adeniumlabs.com">support@adeniumlabs.com</a>.</li>
-          </ul>
-          <p className="text-sm text-neutral-500">This is a simple placeholder. We can expand it with platform‑specific details (TestFlight, App Store analytics, etc.) before public launch.</p>
+    <section id="privacy-policy" className="border-t border-neutral-200 bg-white">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:py-20">
+        <div className="rounded-3xl bg-neutral-50/80 backdrop-blur-sm border border-neutral-200 p-6 sm:p-10 shadow-[0_18px_36px_rgba(0,0,0,0.05)] space-y-6">
+          <div>
+            <h3 className="text-2xl font-semibold text-neutral-900">Privacy Policy</h3>
+            <p className="mt-2 text-neutral-700">
+              We respect your privacy. Sound Asleep does not sell or share personal data with third-party advertisers or data brokers.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-900">Data we collect</h4>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+              <li>Optional email address when you sign up for updates or feedback requests.</li>
+              <li>Crash and performance diagnostics from the app (Firebase Crashlytics &amp; Firebase Performance).</li>
+              <li>Product interaction analytics (e.g., which sounds or presets are used) collected through Firebase Analytics and PostHog.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-900">How we use the data</h4>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+              <li>Provide core app functionality and improve performance and stability.</li>
+              <li>Understand which features are most helpful so we can prioritize future improvements.</li>
+              <li>Communicate important updates or respond to support requests when you voluntarily share contact info.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-900">Your controls</h4>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+              <li>Analytics and diagnostics automatically disable in debug builds; release builds collect only aggregated data.</li>
+              <li>You can opt out of marketing emails at any time using the unsubscribe link.</li>
+              <li>
+                To delete stored data (analytics identifiers, crash reports, or email subscriptions), email{' '}
+                <a href="mailto:support@adeniumlabs.com" className="underline text-[#005579]">
+                  support@adeniumlabs.com
+                </a>{' '}
+                and we will remove it.
+              </li>
+            </ul>
+          </div>
+
+          <p className="text-sm text-neutral-500">Last updated: October 7, 2025</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
