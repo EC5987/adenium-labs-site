@@ -3,8 +3,34 @@ import React from "react";
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 export default function Site() {
+  const [showPrivacy, setShowPrivacy] = React.useState(false);
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleHashChange = () => {
+      setShowPrivacy(window.location.hash === '#privacy-policy');
+    };
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const openPrivacy = React.useCallback(() => {
+    setShowPrivacy(true);
+    if (typeof window !== 'undefined' && window.location.hash !== '#privacy-policy') {
+      window.location.hash = 'privacy-policy';
+    }
+  }, []);
+
+  const closePrivacy = React.useCallback(() => {
+    setShowPrivacy(false);
+    if (typeof window !== 'undefined') {
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, '', `${pathname}${search}`);
+    }
+  }, []);
 
   // Handle smooth scrolling with header offset
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -152,7 +178,11 @@ export default function Site() {
 
               <a
                 href="#privacy-policy"
-                onClick={(e) => handleNavClick(e, 'privacy-policy')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowMobileMenu(false);
+                  openPrivacy();
+                }}
                 className="flex items-center gap-3 text-base font-medium text-neutral-900 py-3 px-4 rounded-xl hover:bg-white/80 transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg overflow-hidden shadow-[0_4px_12px_rgba(107,124,143,0.25)] bg-gradient-to-br from-[#6B7C8F] to-[#8DA0B3]">
@@ -404,8 +434,7 @@ export default function Site() {
       {/* Contact */}
       <ContactSection />
 
-      {/* Privacy */}
-      <PrivacyPolicySection />
+      <PrivacyPolicyDialog open={showPrivacy} onClose={closePrivacy} />
 
       {/* Footer (dark grey with logo + punch line) */}
       <footer className="bg-[#23272B] text-gray-300">
@@ -419,7 +448,16 @@ export default function Site() {
           </div>
           <div className="flex flex-col items-end text-sm gap-1">
             <span className="text-gray-500">© {new Date().getFullYear()} Adenium Labs. All rights reserved.</span>
-            <a href="#privacy-policy" className="hover:text-white/90">Privacy Policy</a>
+            <a
+              href="#privacy-policy"
+              onClick={(e) => {
+                e.preventDefault();
+                openPrivacy();
+              }}
+              className="hover:text-white/90"
+            >
+              Privacy Policy
+            </a>
           </div>
         </div>
       </footer>
@@ -468,7 +506,13 @@ function BetaSection() {
       <div className="mx-auto max-w-6xl px-4 py-16">
         {/* Heading */}
         <div className="text-center mb-10">
-          <h3 className="text-3xl font-semibold">Join the Sound Asleep Beta</h3>
+          <h3 className="text-3xl font-semibold">
+            Join the{' '}
+            <span className="bg-gradient-to-r from-[#0b6a8e] via-[#6B7C8F] to-[#D6A3A9] bg-clip-text text-transparent">
+              Sound Asleep
+            </span>{' '}
+            Beta
+          </h3>
           <p className="mt-3 text-neutral-600">Be among the first to experience our mindful soundscape app. Help us shape the future of digital wellness.</p>
         </div>
 
@@ -478,7 +522,11 @@ function BetaSection() {
           <div className="rounded-2xl bg-white shadow-md p-6 flex flex-col justify-between">
             <div className="flex items-start gap-4">
               <div className="h-10 w-10 rounded-lg bg-[#005579] flex items-center justify-center text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 3v2m6-2v2M5 11h14M7 5h10l-1 2-2 4v3a3 3 0 1 1-6 0V11L8 7 7 5z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M10 2v5.172a2 2 0 0 1-.586 1.414L6.05 11.95a4 4 0 0 0 2.829 6.829h6.242a4 4 0 0 0 2.829-6.829l-3.364-3.364A2 2 0 0 1 14 7.172V2" />
+                  <path d="M9 16h6" />
+                  <path d="M8 12h8" />
+                </svg>
               </div>
               <div className="flex-1">
                 <h4 className="text-lg font-semibold">Beta Testing</h4>
@@ -564,60 +612,60 @@ function BetaSection() {
 function ContactSection() {
   return (
     <section id="contact" className="border-t border-neutral-200 bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-12 sm:py-20">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:py-20 md:py-16">
         <div className="rounded-3xl p-[4px] bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
-          <div className="rounded-3xl bg-white/95 backdrop-blur-sm p-4 sm:p-12">
-            <div className="flex items-center gap-4 mb-4 sm:flex-col sm:text-center sm:mb-8">
+          <div className="rounded-3xl bg-white/95 backdrop-blur-sm p-4 sm:p-12 md:p-10">
+            <div className="flex items-center gap-4 mb-6 sm:flex-col sm:text-center sm:mb-8 md:mb-4">
               <div className="w-28 h-28 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-[#D0E8F3] via-[#E0E6EA] to-[#E9D6DC] shadow-lg flex items-center justify-center flex-shrink-0 sm:mb-6">
                 <img src={asset('adenium-mark-256.png')} alt="Adenium Labs" className="w-20 h-20 sm:w-28 sm:h-28" />
               </div>
-              <div className="text-left sm:text-center">
-                <h2 className="text-xl sm:text-3xl font-semibold text-neutral-900 mb-1 sm:mb-2">Get in Touch</h2>
-                <p className="text-[#005579] text-sm sm:text-lg font-semibold tracking-tight">We're here to help</p>
+              <div className="text-center sm:text-center">
+                <h2 className="text-[1.95rem] sm:text-3xl font-semibold text-neutral-900 leading-tight mb-0 sm:mb-2">Get in Touch</h2>
+                <p className="text-[#005579] text-xl sm:text-2xl font-semibold tracking-tight leading-tight mt-0 sm:mt-1">We're here to help</p>
               </div>
             </div>
 
-            <p className="text-neutral-700 leading-relaxed mb-4 sm:mb-8 text-center text-xs sm:text-base">
+            <p className="text-neutral-700 leading-relaxed mb-6 sm:mb-8 md:mb-4 text-center text-base sm:text-lg">
               Have questions, feedback, or partnership ideas? We'd love to hear from you. Let's build something mindful together.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
-              <div className="flex items-start gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-3 text-base sm:text-base">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#005579] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="text-left sm:text-center">
-                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">General Support</div>
-                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Questions about our apps and services</div>
-                  <a href="mailto:support@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">support@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
+                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">General Support</div>
+                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Questions about our apps and services</div>
+                  <a href="mailto:support@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">support@adeniumlabs.com</a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#D6A3A9] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
                 </div>
-                <div className="text-left sm:text-center">
-                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">Press & Media</div>
-                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Media inquiries and press releases</div>
-                  <a href="mailto:press@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">press@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
+                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Press & Media</div>
+                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Media inquiries and press releases</div>
+                  <a href="mailto:press@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">press@adeniumlabs.com</a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 sm:flex-col sm:items-center sm:gap-3 sm:p-6 rounded-xl bg-neutral-50">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-[#0b6a8e] to-[#005579] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <div className="text-left sm:text-center">
-                  <div className="font-semibold text-neutral-900 mb-1 text-sm sm:text-base">Partnerships</div>
-                  <div className="text-xs sm:text-sm text-neutral-600 mb-1 sm:mb-2">Business collaborations and integrations</div>
-                  <a href="mailto:partnerships@adeniumlabs.com" className="text-[#005579] text-xs sm:text-sm font-medium">partnerships@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
+                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Partnerships</div>
+                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Business collaborations and integrations</div>
+                  <a href="mailto:partnerships@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">partnerships@adeniumlabs.com</a>
                 </div>
               </div>
             </div>
@@ -628,55 +676,90 @@ function ContactSection() {
   );
 }
 
-function PrivacyPolicySection() {
+function PrivacyPolicyDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  React.useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <section id="privacy-policy" className="border-t border-neutral-200 bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-12 sm:py-20">
-        <div className="rounded-3xl bg-neutral-50/80 backdrop-blur-sm border border-neutral-200 p-6 sm:p-10 shadow-[0_18px_36px_rgba(0,0,0,0.05)] space-y-6">
-          <div>
-            <h3 className="text-2xl font-semibold text-neutral-900">Privacy Policy</h3>
-            <p className="mt-2 text-neutral-700">
-              We respect your privacy. Sound Asleep does not sell or share personal data with third-party advertisers or data brokers.
-            </p>
-          </div>
+    <div
+      id="privacy-policy"
+      className="fixed inset-0 z-[60] grid place-items-center bg-black/50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="privacy-policy-title"
+      onMouseDown={handleBackdropClick}
+    >
+      <div className="max-w-3xl w-full rounded-2xl bg-white p-6 sm:p-10 shadow-xl space-y-6 overflow-y-auto max-h-[90svh]">
+        <div>
+          <h3 id="privacy-policy-title" className="text-2xl font-semibold text-neutral-900">
+            Privacy Policy
+          </h3>
+          <p className="mt-2 text-neutral-700">
+            We respect your privacy. Sound Asleep does not sell or share personal data with third-party advertisers or data brokers.
+          </p>
+        </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-neutral-900">Data we collect</h4>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
-              <li>Optional email address when you sign up for updates or feedback requests.</li>
-              <li>Crash and performance diagnostics from the app (Firebase Crashlytics &amp; Firebase Performance).</li>
-              <li>Product interaction analytics (e.g., which sounds or presets are used) collected through Firebase Analytics and PostHog.</li>
-            </ul>
-          </div>
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">Data we collect</h4>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+            <li>Optional email address when you sign up for updates or feedback requests.</li>
+            <li>Crash and performance diagnostics from the app (Firebase Crashlytics &amp; Firebase Performance).</li>
+            <li>Product interaction analytics (e.g., which sounds or presets are used) collected through Firebase Analytics and PostHog.</li>
+          </ul>
+        </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-neutral-900">How we use the data</h4>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
-              <li>Provide core app functionality and improve performance and stability.</li>
-              <li>Understand which features are most helpful so we can prioritize future improvements.</li>
-              <li>Communicate important updates or respond to support requests when you voluntarily share contact info.</li>
-            </ul>
-          </div>
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">How we use the data</h4>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+            <li>Provide core app functionality and improve performance and stability.</li>
+            <li>Understand which features are most helpful so we can prioritize future improvements.</li>
+            <li>Communicate important updates or respond to support requests when you voluntarily share contact info.</li>
+          </ul>
+        </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-neutral-900">Your controls</h4>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
-              <li>Analytics and diagnostics automatically disable in debug builds; release builds collect only aggregated data.</li>
-              <li>You can opt out of marketing emails at any time using the unsubscribe link.</li>
-              <li>
-                To delete stored data (analytics identifiers, crash reports, or email subscriptions), email{' '}
-                <a href="mailto:support@adeniumlabs.com" className="underline text-[#005579]">
-                  support@adeniumlabs.com
-                </a>{' '}
-                and we will remove it.
-              </li>
-            </ul>
-          </div>
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">Your controls</h4>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+            <li>Analytics and diagnostics automatically disable in debug builds; release builds collect only aggregated data.</li>
+            <li>You can opt out of marketing emails at any time using the unsubscribe link.</li>
+            <li>
+              To delete stored data (analytics identifiers, crash reports, or email subscriptions), email{' '}
+              <a href="mailto:support@adeniumlabs.com" className="underline text-[#005579]">
+                support@adeniumlabs.com
+              </a>{' '}
+              and we will remove it.
+            </li>
+          </ul>
+        </div>
 
-          <p className="text-sm text-neutral-500">Last updated: October 7, 2025</p>
+        <p className="text-sm text-neutral-500">Last updated: October 7, 2025</p>
+
+        <div className="flex justify-center">
+          <button
+            onClick={onClose}
+            className="rounded-lg bg-neutral-100 px-5 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition"
+          >
+            Close
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
