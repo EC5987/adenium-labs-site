@@ -616,7 +616,7 @@ function ContactSection() {
         <div className="rounded-3xl p-[4px] bg-gradient-to-br from-[#0b6a8e] via-[#005579] to-[#D6A3A9] shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
           <div className="rounded-3xl bg-white/95 backdrop-blur-sm p-4 sm:p-12 md:p-10">
             <div className="flex items-center gap-4 mb-6 sm:flex-col sm:text-center sm:mb-8 md:mb-4">
-              <div className="w-28 h-28 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-[#D0E8F3] via-[#E0E6EA] to-[#E9D6DC] shadow-lg flex items-center justify-center flex-shrink-0 sm:mb-6">
+              <div className="w-28 h-28 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-[#D0E8F3] via-[#E0E6EA] to-[#E9D6DC] shadow-lg flex items-center justify-center flex-shrink-0 sm:mb-6 md:mb-4">
                 <img src={asset('adenium-mark-256.png')} alt="Adenium Labs" className="w-20 h-20 sm:w-28 sm:h-28" />
               </div>
               <div className="text-center sm:text-center">
@@ -630,42 +630,63 @@ function ContactSection() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-3 text-base sm:text-base">
-              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full md:flex-col">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#005579] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
-                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">General Support</div>
-                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Questions about our apps and services</div>
-                  <a href="mailto:support@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">support@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center md:text-center items-start sm:items-center md:items-center h-full">
+                  <div className="space-y-1 sm:space-y-2 md:space-y-1 md:flex-1">
+                    <div className="font-semibold text-neutral-900 text-lg sm:text-lg">General Support</div>
+                    <div className="text-sm sm:text-base text-neutral-600 leading-tight">Questions about our apps and services</div>
+                  </div>
+                  <a
+                    href="mailto:support@adeniumlabs.com"
+                    className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-auto"
+                  >
+                    support@adeniumlabs.com
+                  </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full md:flex-col">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#D6A3A9] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
                 </div>
-                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
-                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Press & Media</div>
-                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Media inquiries and press releases</div>
-                  <a href="mailto:press@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">press@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center md:text-center items-start sm:items-center md:items-center h-full">
+                  <div className="space-y-1 sm:space-y-2 md:space-y-1 md:flex-1">
+                    <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Press & Media</div>
+                    <div className="text-sm sm:text-base text-neutral-600 leading-tight">Media inquiries and press releases</div>
+                  </div>
+                  <a
+                    href="mailto:press@adeniumlabs.com"
+                    className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-auto"
+                  >
+                    press@adeniumlabs.com
+                  </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full">
+              <div className="flex items-center gap-3 sm:gap-3 md:gap-2 p-3 sm:flex-col sm:items-center sm:p-6 md:p-4 rounded-xl bg-neutral-50 h-full md:flex-col">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-[#0b6a8e] to-[#005579] flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <div className="flex flex-col text-left sm:text-center items-start sm:items-center h-full space-y-[2px] sm:space-y-2 md:space-y-1">
-                  <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Partnerships</div>
-                  <div className="text-sm sm:text-base text-neutral-600 leading-tight">Business collaborations and integrations</div>
-                  <a href="mailto:partnerships@adeniumlabs.com" className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-[6px] lg:mt-auto">partnerships@adeniumlabs.com</a>
+                <div className="flex flex-col text-left sm:text-center md:text-center items-start sm:items-center md:items-center h-full">
+                  <div className="space-y-1 sm:space-y-2 md:space-y-1 md:flex-1">
+                    <div className="font-semibold text-neutral-900 text-lg sm:text-lg">Partnerships</div>
+                    <div className="text-sm sm:text-base text-neutral-600 leading-tight">Business collaborations and integrations</div>
+                  </div>
+                  <a
+                    href="mailto:partnerships@adeniumlabs.com"
+                    className="text-[#005579] text-sm sm:text-base font-medium mt-0.5 sm:mt-3 md:mt-auto"
+                  >
+                    partnerships@adeniumlabs.com
+                  </a>
                 </div>
               </div>
             </div>
