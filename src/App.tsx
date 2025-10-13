@@ -534,7 +534,7 @@ function BetaSection() {
                 <p className="text-neutral-700 mb-5">Download the beta version and start creating your perfect soundscapes today. Your feedback helps us improve the experience for everyone.</p>
               </div>
             </div>
-            <a data-testid="beta-join-button" href="https://testflight.apple.com/join/XXXXXXXX" target="_blank" rel="noreferrer" className="mt-6 block w-full text-center rounded-xl bg-[#005579] hover:bg-[#004760] text-white font-semibold text-base py-3">Join Beta on TestFlight</a>
+            <a data-testid="beta-join-button" href="https://testflight.apple.com/join/sY4NwgPM" target="_blank" rel="noreferrer" className="mt-6 block w-full text-center rounded-xl bg-[#005579] hover:bg-[#004760] text-white font-semibold text-base py-3">Join Beta on TestFlight</a>
           </div>
 
           {/* Card 2: Stay Updated */}
