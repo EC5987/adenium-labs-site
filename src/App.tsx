@@ -226,7 +226,7 @@ export default function Site() {
             {/* Left: title + copy (logo removed for simplicity) */}
             <div className="max-w-2xl md:order-2 text-center md:text-left">
               <h1 className="text-3xl/tight sm:text-4xl/tight md:text-5xl/tight lg:text-6xl/tight font-semibold">Mindful apps for sleep, focus, and creativity</h1>
-              <p className="mt-4 text-neutral-600 text-base sm:text-lg">We craft thoughtful digital experiences designed to improve everyday life – relax, meditate, breathe, get in the zone, or drift to sleep.</p>
+              <p className="mt-4 text-neutral-600 text-base sm:text-lg">We craft thoughtful digital experiences designed to improve everyday life – relax, meditate, breathe, get in the zone, drift to sleep, and wake up peacefully.</p>
               <div className="mt-6 sm:mt-8 flex justify-center md:justify-start">
                 <a href="#sound-asleep" className={
                   "inline-flex items-center gap-2 rounded-xl px-5 py-3 text-white btn-gradient-animated shadow-[0_8px_24px_rgba(0,85,121,0.35)] hover:shadow-[0_12px_28px_rgba(0,85,121,0.45)] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:ring-[#005579] text-sm sm:text-base"
@@ -272,7 +272,7 @@ export default function Site() {
                   Create customizable soundscapes for sleep, meditation, relaxation, focus, massage sessions, and gentle wake‑ups. Layer nature sounds, ambient textures, and healing tones to craft your perfect audio environment.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a href="#beta" className="inline-flex items-center justify-center rounded-xl px-4 py-3 text-white bg-[#005579] hover:bg-[#004760] transition shadow-sm font-semibold text-base">
+                  <a href="https://testflight.apple.com/join/sY4NwgPM" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl px-4 py-3 text-white bg-[#005579] hover:bg-[#004760] transition shadow-sm font-semibold text-base">
                     <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                     Join Beta (TestFlight)
                   </a>
@@ -310,7 +310,7 @@ export default function Site() {
                   <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
                     <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg>
                   </div>
-                  Smart wake‑up options with gentle transitions
+                  Smart wake‑up options with customizable fade-ins
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="mt-0.5 h-5 w-5 rounded-full bg-[#005579] flex items-center justify-center flex-shrink-0">
@@ -592,7 +592,13 @@ function BetaSection() {
           <div className="grid md:grid-cols-3 gap-6 text-neutral-900">
             <div>
               <h5 className="font-semibold mb-1">Send Feedback</h5>
-              <p className="text-sm">Use the built‑in feedback feature or email us directly with your thoughts and suggestions.</p>
+              <p className="text-sm">
+                Use TestFlight’s built‑in feedback button or email us directly at{' '}
+                <a href="mailto:beta@adeniumlabs.com" className="underline text-[#005579]">
+                  beta@adeniumlabs.com
+                </a>
+                . We read every message.
+              </p>
             </div>
             <div>
               <h5 className="font-semibold mb-1">Report Issues</h5>
