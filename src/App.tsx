@@ -4,13 +4,16 @@ const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 export default function Site() {
   const [showPrivacy, setShowPrivacy] = React.useState(false);
+  const [showTerms, setShowTerms] = React.useState(false);
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
     const handleHashChange = () => {
-      setShowPrivacy(window.location.hash === '#privacy-policy');
+      const hash = window.location.hash;
+      setShowPrivacy(hash === '#privacy-policy');
+      setShowTerms(hash === '#terms-of-service');
     };
     handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
@@ -26,7 +29,22 @@ export default function Site() {
 
   const closePrivacy = React.useCallback(() => {
     setShowPrivacy(false);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.location.hash === '#privacy-policy') {
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, '', `${pathname}${search}`);
+    }
+  }, []);
+
+  const openTerms = React.useCallback(() => {
+    setShowTerms(true);
+    if (typeof window !== 'undefined' && window.location.hash !== '#terms-of-service') {
+      window.location.hash = 'terms-of-service';
+    }
+  }, []);
+
+  const closeTerms = React.useCallback(() => {
+    setShowTerms(false);
+    if (typeof window !== 'undefined' && window.location.hash === '#terms-of-service') {
       const { pathname, search } = window.location;
       window.history.replaceState(null, '', `${pathname}${search}`);
     }
@@ -435,6 +453,7 @@ export default function Site() {
       <ContactSection />
 
       <PrivacyPolicyDialog open={showPrivacy} onClose={closePrivacy} />
+      <TermsOfServiceDialog open={showTerms} onClose={closeTerms} />
 
       {/* Footer (dark grey with logo + punch line) */}
       <footer className="bg-[#23272B] text-gray-300">
@@ -448,16 +467,28 @@ export default function Site() {
           </div>
           <div className="flex flex-col items-end text-sm gap-1">
             <span className="text-gray-500">© {new Date().getFullYear()} Adenium Labs. All rights reserved.</span>
-            <a
-              href="#privacy-policy"
-              onClick={(e) => {
-                e.preventDefault();
-                openPrivacy();
-              }}
-              className="hover:text-white/90"
-            >
-              Privacy Policy
-            </a>
+            <div className="flex gap-4">
+              <a
+                href="#privacy-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openPrivacy();
+                }}
+                className="hover:text-white/90"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#terms-of-service"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openTerms();
+                }}
+                className="hover:text-white/90"
+              >
+                Terms of Service
+              </a>
+            </div>
           </div>
         </div>
       </footer>
@@ -776,6 +807,175 @@ function PrivacyPolicyDialog({ open, onClose }: { open: boolean; onClose: () => 
         </div>
 
         <p className="text-sm text-neutral-500">Last updated: October 7, 2025</p>
+
+        <div className="flex justify-center">
+          <button
+            onClick={onClose}
+            className="rounded-lg bg-neutral-100 px-5 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TermsOfServiceDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  React.useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div
+      id="terms-of-service"
+      className="fixed inset-0 z-[60] grid place-items-center bg-black/50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="terms-of-service-title"
+      onMouseDown={handleBackdropClick}
+    >
+      <div className="max-w-3xl w-full rounded-2xl bg-white p-6 sm:p-10 shadow-xl space-y-6 overflow-y-auto max-h-[90svh]">
+        <div>
+          <h3 id="terms-of-service-title" className="text-2xl font-semibold text-neutral-900">
+            Terms of Service
+          </h3>
+          <p className="mt-2 text-sm italic text-neutral-500">Last updated: November 8, 2025</p>
+          <p className="mt-4 text-neutral-700">
+            Welcome to Adenium Labs. Adenium Labs is the brand name under which Esteban Calderon ("Adenium Labs," "we," "our," or "us") offers
+            mobile applications, websites, and related services, including Sound Asleep and any future applications we release (collectively, the
+            "Services").
+          </p>
+          <p className="mt-3 text-neutral-700">
+            By accessing or using the Services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, do not use the
+            Services.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">1. Eligibility</h4>
+          <p className="mt-3 text-neutral-700">
+            You must be at least 13 years old (or the minimum age required in your jurisdiction) to use the Services. If you are under the age of
+            majority, you must have permission from a parent or legal guardian who agrees to these Terms on your behalf.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">2. Account Registration</h4>
+          <p className="mt-3 text-neutral-700">
+            Certain features may require you to create an account. You agree to provide accurate, current information and to update it as needed.
+            You are responsible for keeping your login credentials secure and for all activity that occurs under your account.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">3. Subscriptions &amp; Purchases</h4>
+          <p className="mt-3 text-neutral-700">
+            We may offer both free and paid features, including premium subscriptions for Sound Asleep. Prices, billing cycles, and free-trial periods
+            are described in the app and may vary by platform or region. Subscriptions automatically renew until canceled through your platform account
+            settings (e.g., Apple App Store). All purchases are subject to the App Store's terms, including its refund policies.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">4. License &amp; Acceptable Use</h4>
+          <p className="mt-3 text-neutral-700">
+            We grant you a personal, limited, non-transferable license to use the Services for their intended purpose. You agree not to:
+          </p>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-neutral-700">
+            <li>Modify, reverse engineer, or attempt to access the source code of the Services.</li>
+            <li>Use the Services for unlawful, abusive, or infringing purposes.</li>
+            <li>Interfere with or disrupt any part of the Services or associated networks.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">5. Content &amp; Intellectual Property</h4>
+          <p className="mt-3 text-neutral-700">
+            All content, trademarks, and intellectual property within the Services are owned by or licensed to Esteban Calderon / Adenium Labs. You may
+            not use our branding or assets without prior written consent.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">6. Privacy</h4>
+          <p className="mt-3 text-neutral-700">
+            Your privacy matters. Our collection and use of personal data is described in the Adenium Labs Privacy Policy, which is incorporated into
+            these Terms. Please review it to understand how we handle your information.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">7. Third-Party Services</h4>
+          <p className="mt-3 text-neutral-700">
+            Some features may rely on third-party services (for example, analytics providers or payment processors). Your use of those features may be
+            subject to additional third-party terms, and we are not responsible for their content or practices.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">8. Disclaimer of Warranties</h4>
+          <p className="mt-3 text-neutral-700">
+            The Services are provided "as is" and "as available." We do not make any warranties, express or implied, regarding reliability, accuracy, or
+            fitness for a particular purpose. We do not guarantee that the Services will improve your sleep, focus, or overall health. You use the
+            Services at your own risk.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">9. Limitation of Liability</h4>
+          <p className="mt-3 text-neutral-700">
+            To the fullest extent permitted by law, Esteban Calderon / Adenium Labs will not be liable for any indirect, incidental, special, or
+            consequential damages arising from your use or inability to use the Services. Our total liability for any claim will not exceed the amount
+            you paid, if any, to use the Services in the twelve months preceding the claim.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">10. Termination</h4>
+          <p className="mt-3 text-neutral-700">
+            We may suspend or terminate your access to the Services at any time, with or without notice, for conduct that we believe violates these
+            Terms or is otherwise harmful. Sections that by their nature should survive termination (including ownership provisions, disclaimers, and
+            limitations of liability) will remain in effect.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">11. Changes to These Terms</h4>
+          <p className="mt-3 text-neutral-700">
+            We may update these Terms from time to time. If the changes are material, we will notify you via the Services or another channel. Your
+            continued use of the Services after the effective date of any changes constitutes acceptance of the revised Terms.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-neutral-900">12. Contact</h4>
+          <p className="mt-3 text-neutral-700">If you have questions about these Terms or the Services, please contact:</p>
+          <div className="mt-3 space-y-1 text-neutral-700">
+            <strong>Adenium Labs Support</strong>
+            <div>
+              <a href="mailto:support@adeniumlabs.com" className="underline text-[#005579]">
+                support@adeniumlabs.com
+              </a>
+            </div>
+            <div>Los Angeles, CA, USA</div>
+          </div>
+        </div>
 
         <div className="flex justify-center">
           <button
