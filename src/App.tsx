@@ -8,17 +8,49 @@ export default function Site() {
   const [showWordmarkImg, setShowWordmarkImg] = React.useState(true);
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
 
+  const scrollToTargetId = React.useCallback((targetId: string, behavior: ScrollBehavior = 'smooth') => {
+    if (typeof window === 'undefined') return;
+    const element = document.getElementById(targetId);
+    if (!element) return;
+
+    const header = document.querySelector('header');
+    const headerHeight = header instanceof HTMLElement ? header.offsetHeight : 0;
+    const { top } = element.getBoundingClientRect();
+    const offsetTop = top + window.pageYOffset - headerHeight - 8;
+
+    window.scrollTo({
+      top: Math.max(0, offsetTop),
+      behavior
+    });
+  }, []);
+
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    const handleHashChange = () => {
+    const applyHash = (behavior: ScrollBehavior = 'smooth') => {
       const hash = window.location.hash;
+      const targetId = hash.startsWith('#') ? hash.slice(1) : hash;
+
       setShowPrivacy(hash === '#privacy-policy');
       setShowTerms(hash === '#terms-of-service');
+
+      if (targetId && !['privacy-policy', 'terms-of-service'].includes(targetId)) {
+        scrollToTargetId(targetId, behavior);
+      }
     };
-    handleHashChange();
+
+    const handleHashChange = () => applyHash();
+    applyHash('auto');
+
+    const rafId = window.requestAnimationFrame(() => applyHash('auto'));
+    const timeoutId = window.setTimeout(() => applyHash('auto'), 150);
+
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [scrollToTargetId]);
 
   const openPrivacy = React.useCallback(() => {
     setShowPrivacy(true);
@@ -55,16 +87,10 @@ export default function Site() {
     e.preventDefault();
     setShowMobileMenu(false);
 
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerHeight = 40; // Reduced offset for better spacing
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+    scrollToTargetId(targetId);
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', `#${targetId}`);
     }
   };
 
