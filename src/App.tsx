@@ -367,13 +367,25 @@ export default function Site() {
             <div className="max-w-2xl">
               <div className="text-center md:text-center">
                 <div className="flex justify-center">
-                  <div className="h-14 w-14 rounded-[1.1rem] shadow-[0_12px_24px_rgba(0,85,121,0.2)] overflow-hidden">
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={handleAppStoreClick}
+                    className="h-14 w-14 rounded-[1.1rem] shadow-[0_12px_24px_rgba(0,85,121,0.2)] overflow-hidden"
+                  >
                     <img src={asset('soundasleep-icon-new.png')} alt="Sound Asleep app icon" className="h-full w-full object-cover" />
-                  </div>
+                  </a>
                 </div>
-                <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-1.5 text-xs font-title uppercase tracking-[0.2em] text-[#005579]">
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={handleAppStoreClick}
+                  className="mt-3 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-1.5 text-xs font-title uppercase tracking-[0.2em] text-[#005579]"
+                >
                   Now live on the App Store
-                </div>
+                </a>
                 <div className="md:hidden">
                   <h2 className="mt-4 text-3xl/tight sm:text-4xl/tight font-title">Sound Asleep</h2>
                   <div className="relative mx-auto mt-5 flex justify-center">
@@ -675,7 +687,7 @@ function DownloadSection({ onAppStoreClick }: { onAppStoreClick: (event: React.M
               <div className="flex-1">
                 <h4 className="text-lg font-title">Stay in the Loop</h4>
                 <p className="text-sm text-neutral-500 -mt-1 mb-3">New sounds and updates</p>
-                <p className="text-neutral-700 mb-4">Join our mailing list for new sound packs, product updates, and guided sleep tips.</p>
+                <p className="text-neutral-700 mb-4">Join our mailing list for occasional product updates and announcements.</p>
               </div>
             </div>
             <form onSubmit={handleSubmit} className="mt-6 space-y-3" noValidate>
@@ -712,30 +724,30 @@ function DownloadSection({ onAppStoreClick }: { onAppStoreClick: (event: React.M
 
         {/* Feedback banner */}
         <div className="mt-8 rounded-2xl p-6 md:p-8 bg-gradient-to-br from-[#F8ECEF] via-[#EECED4] to-[#D6A3A9] text-neutral-900">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-5">
             <div className="h-10 w-10 rounded-lg bg-[#005579] flex items-center justify-center text-white">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
             </div>
             <h4 className="text-lg font-title">We would love your feedback</h4>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 text-neutral-900">
-            <div>
+          <div className="grid md:grid-cols-3 text-neutral-900 divide-y md:divide-y-0 md:divide-x divide-neutral-900/15">
+            <div className="py-4 md:py-0 md:px-6 md:first:pl-0 md:last:pr-0">
               <h5 className="font-title mb-1">Send Feedback</h5>
-              <p className="text-sm">
-                Email us directly at{' '}
+              <p className="text-sm text-neutral-700 leading-relaxed">
+                Email us at{' '}
                 <a href="mailto:support@adeniumlabs.com" className="underline text-[#005579]">
                   support@adeniumlabs.com
                 </a>
-                . We read every message.
+                .
               </p>
             </div>
-            <div>
+            <div className="py-4 md:py-0 md:px-6 md:first:pl-0 md:last:pr-0">
               <h5 className="font-title mb-1">Report Issues</h5>
-              <p className="text-sm">Found a bug? Include your device model, iOS version, and steps to reproduce.</p>
+              <p className="text-sm text-neutral-700 leading-relaxed">Include your device model, iOS version, and steps to reproduce.</p>
             </div>
-            <div>
+            <div className="py-4 md:py-0 md:px-6 md:first:pl-0 md:last:pr-0">
               <h5 className="font-title mb-1">Request Sounds & Features</h5>
-              <p className="text-sm">Wish we had a sound or feature? Let us know.</p>
+              <p className="text-sm text-neutral-700 leading-relaxed">Wish we had a sound or feature? Let us know.</p>
             </div>
           </div>
         </div>
