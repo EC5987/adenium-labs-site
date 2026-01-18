@@ -662,7 +662,7 @@ function DownloadSection({ onAppStoreClick }: { onAppStoreClick: (event: React.M
         {/* Two-card grid */}
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
           {/* Card 1: Review */}
-          <div className="rounded-2xl bg-white shadow-md p-6 flex flex-col justify-between">
+          <div className="rounded-2xl bg-white shadow-md p-4 sm:p-5 flex flex-col">
             <div className="flex items-start gap-4">
               <div className="h-10 w-10 rounded-lg bg-[#005579] flex items-center justify-center text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -672,14 +672,16 @@ function DownloadSection({ onAppStoreClick }: { onAppStoreClick: (event: React.M
               <div className="flex-1">
                 <h4 className="text-lg font-title">Leave a Review</h4>
                 <p className="text-sm text-neutral-500 -mt-1 mb-3">Help others discover Sound Asleep</p>
-                <p className="text-neutral-700 mb-5">If the app has helped you rest better, a quick review makes a big difference.</p>
+                <p className="text-neutral-700">If the app has helped you rest better, a quick review makes a big difference.</p>
               </div>
             </div>
-            <a data-testid="review-app-button" href={REVIEW_URL} target="_blank" rel="noreferrer" onClick={onAppStoreClick} className="mt-6 block w-full text-center rounded-xl bg-[#005579] hover:bg-[#004760] text-white font-cta text-base py-3">Leave an App Store Review</a>
+            <div className="mt-auto pt-4">
+              <a data-testid="review-app-button" href={REVIEW_URL} target="_blank" rel="noreferrer" onClick={onAppStoreClick} className="block w-full text-center rounded-xl bg-[#005579] hover:bg-[#004760] text-white font-cta text-base py-2.5">Leave an App Store Review</a>
+            </div>
           </div>
 
           {/* Card 2: Updates */}
-          <div className="rounded-2xl bg-white shadow-md p-6 flex flex-col justify-between">
+          <div className="rounded-2xl bg-white shadow-md p-4 sm:p-5 flex flex-col">
             <div className="flex items-start gap-4">
               <div className="h-10 w-10 rounded-lg bg-[#D6A3A9] flex items-center justify-center text-black">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16v12H4z"/><path d="m22 6-10 7L2 6"/></svg>
@@ -690,34 +692,38 @@ function DownloadSection({ onAppStoreClick }: { onAppStoreClick: (event: React.M
                 <p className="text-neutral-700 mb-4">Join our mailing list for occasional product updates and announcements.</p>
               </div>
             </div>
-            <form onSubmit={handleSubmit} className="mt-6 space-y-3" noValidate>
-              <input
-                type="email"
-                name="email"
-                required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="Enter your email address"
-                className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 outline-none focus:border-neutral-400"
-                aria-label="Email address"
-              />
-              <button
-                data-testid="updates-email-button"
-                type="submit"
-                disabled={status === 'loading'}
-                className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C89BA0] disabled:opacity-70 disabled:cursor-not-allowed text-black font-cta text-base py-3 transition-colors"
-              >
-                {status === 'loading' ? 'Sending...' : 'Send Me Updates'}
-              </button>
-              {feedback && (
-                <p
-                  role="status"
-                  aria-live="polite"
-                  className={`text-sm ${status === 'success' ? 'text-emerald-600' : 'text-red-600'}`}
+            <form onSubmit={handleSubmit} className="mt-3 flex flex-col flex-1" noValidate>
+              <div className="pb-2">
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="Enter your email address"
+                  className="w-full rounded-xl border border-neutral-300 bg-white px-4 pt-2 pb-3 outline-none focus:border-neutral-400"
+                  aria-label="Email address"
+                />
+              </div>
+              <div className="mt-auto space-y-2">
+                <button
+                  data-testid="updates-email-button"
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="block w-full text-center rounded-xl bg-[#D6A3A9] hover:bg-[#C89BA0] disabled:opacity-70 disabled:cursor-not-allowed text-black font-cta text-base py-2.5 transition-colors"
                 >
-                  {feedback}
-                </p>
-              )}
+                  {status === 'loading' ? 'Sending...' : 'Send Me Updates'}
+                </button>
+                {feedback && (
+                  <p
+                    role="status"
+                    aria-live="polite"
+                    className={`text-sm ${status === 'success' ? 'text-emerald-600' : 'text-red-600'}`}
+                  >
+                    {feedback}
+                  </p>
+                )}
+              </div>
             </form>
           </div>
         </div>
