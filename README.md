@@ -21,14 +21,14 @@ The Adenium Labs marketing site introduces our mindful digital experiences with 
 - **Hero** – brand introduction, tagline, and CTA to explore Sound Asleep
 - **Sound Asleep Feature Section** – feature highlights, testimonial copy, and iPhone mockups sourced from `public/screens`
 - **Screenshots Gallery** – masonry of app screens with descriptive captions
-- **Beta Call to Action** – TestFlight sign-up button plus mailing list form wired to `/api/subscribe`
+- **Download Call to Action** – App Store link plus mailing list form wired to `/api/subscribe`
 - **Contact Section** – quick access to support, press, and partnership emails
 - **Privacy Modal** – accessible via footer link with placeholder policy copy
 
 ## Managing Content & Assets
 - Logos, wordmarks, and device frames live in `public/`
 - Hero and gallery screenshots live in `public/screens/`
-- Update CTA links (e.g., TestFlight code, mailing list endpoint) in `src/App.tsx`
+- Update CTA links (e.g., App Store URL, mailing list endpoint) in `src/App.tsx`
 - Tailwind utility classes for layout live directly inside JSX; adjust global styles in `src/index.css`
 
 ## Deployment

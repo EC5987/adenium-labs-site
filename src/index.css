@@ -2,6 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "ChillaxVariable";
+  src:
+    url("/fonts/Chillax-Variable.woff2") format("woff2"),
+    local("Chillax Variable"),
+    local("ChillaxVariable"),
+    local("Chillax");
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+:root{
+  /* —— Core palette —— */
+  --teal:#005579;           /* Primary */
+  --blush:#D6A3A9;          /* Gradient accent only */
+  --cream:#FFF6C3;          /* Highlight glow */
+  --charcoal:#1E1E1E;       /* Text on light */
+  --slate:#6B7C8F;          /* Neutral */
+  --offwhite:#F7F8F9;       /* Light surfaces */
+
+  /* —— Elevation & radii —— */
+  --radius:16px; --radius-sm:10px; --pill:999px;
+  --shadow:0 10px 24px rgba(0,0,0,.12), 0 2px 6px rgba(0,0,0,.08);
+  --shadow-soft:0 6px 16px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
+
+  /* —— Typography —— */
+  --font:"ChillaxVariable", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --w-title:600; --w-body:400; --w-cta:500;
+
+  /* —— Backgrounds —— */
+  --bg-light: radial-gradient(120px 120px at 78% 20%, var(--cream), rgba(255,246,195,0) 60%), linear-gradient(180deg, #0b5a78 0%, #6b7c8f 55%, #d6a3a9 100%);
+  --bg-dark:  radial-gradient(140px 140px at 20% 28%, rgba(255,246,195,.25), rgba(255,246,195,0) 55%), linear-gradient(180deg, #032f3e 0%, #0b4e67 55%, #415362 100%);
+
+  /* —— Controls (Light) —— */
+  --toggle-track-on: linear-gradient(135deg,#0b6a8e,var(--teal));
+  --toggle-track-off: #d7dee6;
+  --toggle-knob: var(--offwhite);
+  --slider-track: #d9dfe6;
+  --slider-fill:  linear-gradient(90deg,#0b6a8e,var(--teal));
+  --slider-thumb: var(--offwhite);
+
+  /* —— Controls (Dark) —— */
+  --d-text:#f2f6f7; --d-muted:#b9c7d1;
+  --d-card: linear-gradient(180deg, #032f3e, #0b4e67);
+  --d-toggle-off:#284b5a; --d-toggle-on: linear-gradient(135deg,#12799f,#0a4e66);
+  --d-thumb:#F7F8F9; --d-slider-track:#274b5a; --d-slider-fill:linear-gradient(90deg,#12799f,#0a4e66);
+}
+
+body {
+  font-family: var(--font);
+}
+
 /* Subtle entrance motion for hero visuals */
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
@@ -27,6 +80,43 @@
 
 @media (prefers-reduced-motion: reduce) {
   .btn-gradient-animated { animation: none; }
+}
+
+@keyframes halo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.brand-halo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: conic-gradient(from 20deg, #0b6a8e, #005579, #6B7C8F, #D6A3A9, #0b6a8e);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  opacity: 0.55;
+  animation: halo-spin 22s linear infinite;
+  pointer-events: none;
+}
+
+.brand-halo__inner {
+  position: absolute;
+  inset: 6%;
+  border-radius: 9999px;
+  background: conic-gradient(from 200deg, #D6A3A9, #6B7C8F, #005579, #0b6a8e, #D6A3A9);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1px), #000 100%);
+  mask: radial-gradient(farthest-side, transparent calc(100% - 1px), #000 100%);
+  opacity: 0.35;
+  animation: halo-spin 28s linear infinite reverse;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-halo::before,
+  .brand-halo__inner {
+    animation: none;
+  }
 }
 
 /* Custom smooth animations for phone screenshot cards */
