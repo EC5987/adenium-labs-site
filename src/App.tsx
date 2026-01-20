@@ -1,13 +1,13 @@
 import React from "react";
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
-const APP_STORE_URL = "https://apps.apple.com/app/id0000000000";
+const APP_STORE_URL = "https://apps.apple.com/us/app/sound-asleep-custom-sounds/id6753701646";
 const HERO_SCREENSHOT = "screens/hero.png";
 const HERO_SCREENSHOT_ALT = "Sound Asleep home screen preview";
 const FEATURED_SCREENSHOT = "screens/featured-presets.png";
 const FEATURED_SCREENSHOT_ALT = "Sound Asleep featured presets screen";
-const REVIEW_URL = "https://apps.apple.com/app/id0000000000?action=write-review";
-const APP_STORE_LIVE = false;
+const REVIEW_URL = "https://apps.apple.com/us/app/sound-asleep-custom-sounds/id6753701646?action=write-review";
+const APP_STORE_LIVE = true;
 const SCREENSHOTS = [
   {
     src: HERO_SCREENSHOT,
