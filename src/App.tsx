@@ -581,17 +581,32 @@ export default function Site() {
 
       {/* Footer (dark grey with logo + punch line) */}
       <footer className="bg-[#23272B] text-gray-300">
-        <div className="mx-auto max-w-6xl px-4 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto max-w-6xl px-4 py-10 flex flex-col gap-6 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-center sm:text-left">
             <img className="h-8 w-auto" src={asset('adenium-mark-white-256.png')} alt="Adenium Labs Mark" />
             <div>
               <div className="font-title">Adenium Labs</div>
               <div className="text-sm text-gray-400">Mindful apps for everyday life</div>
             </div>
           </div>
-          <div className="flex flex-col items-end text-sm gap-1">
+          <a
+            href="https://www.instagram.com/soundasleep.app/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Follow Sound Asleep on Instagram"
+            title="Follow Sound Asleep on Instagram"
+            className="group relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/85 shadow-[0_10px_22px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/15 hover:text-white hover:shadow-[0_14px_28px_rgba(0,0,0,0.32)] self-center sm:justify-self-center"
+          >
+            <span className="absolute inset-0 rounded-full bg-white/20 blur-[8px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+            <svg viewBox="0 0 24 24" className="relative h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.65">
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4.2" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+            </svg>
+          </a>
+          <div className="flex flex-col items-center text-center text-sm gap-2 sm:items-end sm:text-right sm:justify-self-end">
             <span className="text-gray-500">© {new Date().getFullYear()} Adenium Labs. All rights reserved.</span>
-            <div className="flex gap-4">
+            <div className="flex items-center justify-center gap-4 sm:justify-end">
               <a
                 href="#privacy-policy"
                 onClick={(e) => {
